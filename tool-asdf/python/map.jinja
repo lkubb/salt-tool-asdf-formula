@@ -1,0 +1,20 @@
+{# see https://github.com/pyenv/pyenv/wiki#suggested-build-environment #}
+
+{%- set dependencies = salt['grains.filter_by']({
+		'Arch': ['base-devel', 'openssl', 'xz', 'zlib'],
+		'Debian': [
+			'make', 'build-essential', 'libssl-dev',
+			'zlib1g-dev', 'libbz2-dev', 'libreadline-dev',
+			'libsqlite3-dev', 'wget', 'curl', 'llvm',
+			'libncursesw5-dev', 'xz-utils', 'tk-dev',
+			'libxml2-dev', 'libxmlsec1-dev', 'libffi-dev', 'liblzma-dev'],
+		'MacOS': ['openssl', 'readline', 'sqlite3', 'xz', 'zlib'],
+		'RedHat': [
+			'make', 'gcc', 'zlib-devel', 'bzip2', 'bzip2-devel', 'readline-devel',
+			'sqlite', 'sqlite-devel', 'openssl-devel', 'tk-devel', 'libffi-devel',
+			'xz-devel'],
+		'Suse': [
+			'gcc', 'automake', 'bzip2', 'libbz2-devel', 'xz', 'xz-devel',
+			'openssl-devel', 'ncurses-devel', 'readline-devel', 'zlib-devel',
+			'tk-devel', 'libffi-devel', 'sqlite3-devel'],
+	}, 'os_family') -%}

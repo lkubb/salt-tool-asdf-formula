@@ -1,0 +1,5 @@
+{# see https://github.com/kennyp/asdf-golang#requirements #}
+{%- set dependencies = salt['grains.filter_by']({
+		'default': ['coreutils', 'curl']
+		'MacOS': ['coreutils'],
+	}, 'os_family') -%}
