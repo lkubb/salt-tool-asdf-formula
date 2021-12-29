@@ -1,10 +1,11 @@
 tool:
-  asdf:
-    - name: user                        # username to install asdf plugins/tool versions for
-      shell: zsh                        # needs to know user's shell for completions/hooks/exports 
+  users:
+    user:
       xdg: true                         # force xdg dirs
       persistenv: '.config/zsh/zshenv'  # persist asdf env vars to use xdg dirs permanently (will be appended to file relative to $HOME)
-      hook: '.config/zsh/zshrc'         # runcom that loads hooks, if you want to autoconfigure it (eg for direnv)
-      python: latest                    # plugin: version to install. can be True (for latest), list or string
-      system:
-        python: latest
+      rchook: '.config/zsh/zshrc'       # runcom that loads hooks, if you want to autoconfigure it (eg for direnv)
+      asdf:
+        python: latest                  # plugin: version to install. can be True (for latest), list or string
+        integrate-direnv: true          # if direnv is installed, make sure envrc files can use asdf
+        system:
+          python: latest

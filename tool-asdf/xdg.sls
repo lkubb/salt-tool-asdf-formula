@@ -1,27 +1,30 @@
-{%- for user in salt['pillar.get']('tool:asdf', []) | rejectattr('xdg', 'sameas', False) %}
-  {%- from 'tool-asdf/map.jinja' import user, xdg with context %}
+{%- from 'tool-asdf/map.jinja' import asdf -%}
 
+include:
+  - .package
+
+{%- for user in asdf.users | rejectattr('xdg', 'sameas', False) %}
 asdf configuration is migrated to XDG_CONFIG_HOME for user '{{ user.name }}':
   file.rename:
     - names:
-      - {{ xdg.config }}/asdf/tool-versions:
+      - {{ user.xdg.config }}/asdf/tool-versions:
         - source: {{ user.home }}/.tool-versions
-      - {{ xdg.config }}/asdf/asdfrc:
+      - {{ user.xdg.config }}/asdf/asdfrc:
         - source: {{ user.home }}/.asdfrc
     - makedirs: true
 
 asdf data is migrated to XDG_DATA_HOME for user '{{ user.name }}':
   file.rename:
-    - name: {{ xdg.data }}/asdf
+    - name: {{ user.xdg.data }}/asdf
     - source: {{ user.home }}/.asdf
     - makedirs: true
 
 asdf uses XDG dirs during this salt run:
   environ.setenv:
     - value:
-        ASDF_CONFIG_FILE: "{{ xdg.config }}/asdf/asdfrc"
-        ASDF_DATA_DIR: "{{ xdg.data }}/asdf"
-        ASDF_DEFAULT_TOOL_VERSIONS_FILENAME: "{{ xdg.config }}/asdf/tool-versions"
+        ASDF_CONFIG_FILE: "{{ user.xdg.config }}/asdf/asdfrc"
+        ASDF_DATA_DIR: "{{ user.xdg.data }}/asdf"
+        ASDF_DEFAULT_TOOL_VERSIONS_FILENAME: "{{ user.xdg.config }}/asdf/tool-versions"
 
   {%- if user.persistenv %}
 asdf knows about XDG locations for user '{{ user.name }}':

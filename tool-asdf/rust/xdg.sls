@@ -1,9 +1,9 @@
-{%- for user in salt['pillar.get']('tool:asdf', []) | rejectattr('xdg', 'sameas', False) %}
-  {%- from 'tool-asdf/map.jinja' import user, xdg with context %}
+{%- from 'tool-asdf/map.jinja' import asdf %}
 
+{%- for user in asdf.users | rejectattr('xdg', 'sameas', False) %}
 asdf Rust plugin global configuration is migrated to XDG_CONFIG_HOME for user '{{ user.name }}':
   file.rename:
-    - name: {{ xdg.config }}/asdf/.default-cargo-crates
+    - name: {{ users.xdg.config }}/asdf/.default-cargo-crates
     - source: {{ user.home }}/.default-cargo-crates
     - makedirs: true
 
@@ -12,7 +12,7 @@ asdf Rust plugin global configuration is migrated to XDG_CONFIG_HOME for user '{
 asdf Rust uses XDG dirs during this salt run:
   environ.setenv:
     - value:
-        ASDF_CRATE_DEFAULT_PACKAGES_FILE: "{{ xdg.config }}/asdf"
+        ASDF_CRATE_DEFAULT_PACKAGES_FILE: "{{ users.xdg.config }}/asdf"
 
   {%- if user.persistenv %}
 asdf Rust plugin knows about XDG location for user '{{ user.name }}':

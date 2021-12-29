@@ -1,5 +1,7 @@
-{%- for user in salt['pillar.get']('tool:asdf', []) | selectattr('system') %}
-  {%- for tool, version in user.system.items() %}
+{%- from 'tool-asdf/map.jinja' import asdf %}
+
+{%- for user in asdf.users | selectattr('asdf.system') %}
+  {%- for tool, version in user.asdf.system.items() %}
 User '{{ user.name }} uses {{ tool }} {{ version }} by default:
   asdf.version_set:
     - name: {{ tool }}

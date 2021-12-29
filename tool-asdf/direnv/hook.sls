@@ -1,5 +1,6 @@
-{%- for user in salt['pillar.get']('tool:asdf', []) | selectattr('direnv') %}
-  {%- from 'tool-asdf/map.jinja' import user with context %}
+{%- from 'tool-asdf/map.jinja' import asdf %}
+
+{%- for user in asdf.users | selectattr('asdf.direnv') %}
 direnv is hooked to shell for '{{ user.name }}':
   file.append:
     - name: {{ user.home }}/{{ user.hook }}

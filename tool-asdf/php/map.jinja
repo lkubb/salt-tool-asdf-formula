@@ -1,15 +1,15 @@
 {# see https://github.com/asdf-community/asdf-php/blob/master/.github/workflows/workflow.yml and https://github.com/asdf-community/asdf-php#macos #}
 
 {%- set dependencies = salt['grains.filter_by']({
-		'Debian': [
-			'autoconf', 'bison', 'build-essential', 'curl',
-			'gettext', 'git', 'libgd-dev', 'libcurl4-openssl-dev',
-			'libedit-dev', 'libicu-dev', 'libjpeg-dev', 'libmysqlclient-dev',
-			'libonig-dev', 'libpng-dev', 'libpq-dev', 'libreadline-dev',
-			'libsqlite3-dev', 'libssl-dev', 'libxml2-dev', 'libzip-dev',
-			'openssl', 'pkg-config', 're2c', 'zlib1g-dev'],
-		'MacOS': [
-			'autoconf', 'automake', 'bison', 'freetype', 'gd', 'gettext', 'gmp',
-			'icu4c', 'imagemagick', 'krb5', 'libedit', 'libiconv', 'libjpeg',
-			'libpng', 'libsodium', 'libxml2', 'libzip', 'pkg-config', 're2c', 'zlib'],
-	}, 'os_family') -%}
+    'Debian': [
+      'autoconf', 'bison', 'build-essential', 'curl',
+      'gettext', 'git', 'libgd-dev', 'libcurl4-openssl-dev',
+      'libedit-dev', 'libicu-dev', 'libjpeg-dev', 'libmysqlclient-dev',
+      'libonig-dev', 'libpng-dev', 'libpq-dev', 'libreadline-dev',
+      'libsqlite3-dev', 'libssl-dev', 'libxml2-dev', 'libzip-dev',
+      'openssl', 'pkg-config', 're2c', 'zlib1g-dev'],
+    'MacOS': [
+      'autoconf', 'automake', 'bison', 'freetype', 'gd', 'gettext', 'gmp',
+      'icu4c', 'imagemagick', 'krb5', 'libedit', 'libiconv', 'libjpeg',
+      'libpng', 'libsodium', 'libxml2', 'libzip', 'pkg-config', 're2c', 'zlib'],
+  }, 'os_family') -%}

@@ -1,5 +1,7 @@
+{%- from 'tool-asdf/map.jinja' import asdf %}
+
 include:
-{%- if salt['pillar.get']('tool:asdf', []) | rejectattr('xdg', 'sameas', False) %}
+{%- if asdf.users | rejectattr('xdg', 'sameas', False) %}
   - .xdg
 {%- endif %}
   - .package

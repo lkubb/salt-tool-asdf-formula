@@ -1,17 +1,15 @@
-{%- from 'tool-asdf/map.jinja' import tools %}
-
-{%- set users = salt['pillar.get']('tool:asdf', []) -%}
+{%- from 'tool-asdf/map.jinja' import asdf, tools %}
 
 include:
   - .package
-{%- if users | rejectattr('xdg', 'sameas', False) %}
+{%- if asdf.users | rejectattr('xdg', 'sameas', False) %}
   - .xdg
 {%- endif %}
 {%- for tool in tools %}
-  {%- if users | selectattr(tool) %}
+  {%- if asdf.users | selectattr('asdf.' ~ tool) %}
   - .{{ tool }}
   {%- endif %}
 {%- endfor %}
-{%- if users | selectattr('system') %}
+{%- if asdf.users | selectattr('asdf.system') %}
   - .system
 {%- endif %}

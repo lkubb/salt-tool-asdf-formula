@@ -1,10 +1,12 @@
+{%- from 'tool-asdf/map.jinja' import asdf %}
+
 include:
   - ..package
 
-{%- for user in salt['pillar.get']('tool:asdf', []) | selectattr('direnv') %}
+{%- for user in asdf.users | selectattr('asdf.direnv') %}
   {# ugly workaround for uglier statement
-    {%- set versions = user.nodejs if user.nodejs is iterable and (user.nodejs is not string and user.nodejs is not mapping) else [user.nodejs] %}#}
-  {%- set versions = user.nodejs if user.nodejs.__class__.__name__ == 'list' else [user.nodejs if user.nodejs is not sameas True else 'latest'] %}
+    {%- set versions = user.direnv if user.direnv is iterable and (user.direnv is not string and user.direnv is not mapping) else [user.direnv] %}#}
+  {%- set versions = user.direnv if user.direnv.__class__.__name__ == 'list' else [user.direnv if user.direnv is not sameas True else 'latest'] %}
   {%- for version in versions %}
 direnv {{ version }} is installed for user '{{ user.name }}':
   asdf.version_installed:
