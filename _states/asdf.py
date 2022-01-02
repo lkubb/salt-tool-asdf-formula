@@ -57,6 +57,58 @@ def plugin_installed(name, user=None):
     return ret
 
 
+def plugin_uptodate(name=None, user=None):
+    """
+    Make sure asdf plugins are up to date.
+
+    CLI Example:
+
+    .. code-block:: bash
+
+        salt '*' asdf.uptodate python
+
+    name
+        The name of the plugin to update.
+
+    user
+        The username to update the plugin for. Defaults to salt user.
+
+    """
+    ret = {"name": name or 'all', "result": True, "comment": "", "changes": {}}
+
+    try:
+        if name is None or name == 'all':
+            if __opts__["test"]:
+                ret["result"] = None
+                ret["comment"] = "All plugins would have been updated for user '{}'.".format(user)
+                ret["changes"] = {'updated': 'all'}
+            elif __salt__["asdf.update_plugins"](user):
+                ret["comment"] = "All plugins were updated for user '{}'.".format(user)
+                ret["changes"] = {'updated': 'all'}
+            else:
+                ret["result"] = False
+                ret["comment"] = "Something went wrong while calling asdf."
+            return ret
+
+        if __salt__["asdf.is_plugin_installed"](name, user):
+            ret["comment"] = "Plugin is already installed."
+        elif __opts__['test']:
+            ret['result'] = None
+            ret['comment'] = "Plugin {} would have been installed for user '{}'.".format(name, user)
+            ret["changes"] = {'installed': name}
+        elif __salt__["asdf.install_plugin"](name, user):
+            ret["comment"] = "Plugin {} was installed for user '{}'.".format(name, user)
+            ret["changes"] = {'installed': name}
+        else:
+            ret["result"] = False
+            ret["comment"] = "Something went wrong while calling asdf."
+    except salt.exceptions.CommandExecutionError as e:
+        ret["result"] = False
+        ret["comment"] = str(e)
+
+    return ret
+
+
 def plugin_absent(name, user=None):
     """
     Make sure asdf plugin is removed.

@@ -88,6 +88,12 @@ def update_plugin(name, user=None):
     return __salt__['cmd.retcode']("{} plugin-update '{}'".format(e, name), runas=user)
 
 
+def update_plugins(user=None):
+    e = _which(user)
+
+    return __salt__['cmd.retcode']("{} plugin-update --all".format(e), runas=user)
+
+
 def set_version(name, version, user=None, cwd=''):
     if not is_version_installed(name, version, user):
         raise CommandExecutionError('{} version {} is not installed.'.format(name, version))
