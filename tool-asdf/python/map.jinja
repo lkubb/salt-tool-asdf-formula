@@ -1,5 +1,7 @@
-{# see https://github.com/pyenv/pyenv/wiki#suggested-build-environment #}
+{%- from 'tool-asdf/map.jinja' import asdf %}
+{%- set users = asdf.users | selectattr('asdf.python', 'defined') | list -%} {# casting to list ensures it can be imported #}
 
+{# see https://github.com/pyenv/pyenv/wiki#suggested-build-environment #}
 {%- set dependencies = salt['grains.filter_by']({
     'Arch': ['base-devel', 'openssl', 'xz', 'zlib'],
     'Debian': [

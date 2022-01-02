@@ -1,5 +1,4 @@
-{%- from 'tool-asdf/map.jinja' import asdf %}
-{%- from 'tool-asdf/nodejs/map.jinja' import dependencies -%}
+{%- from 'tool-asdf/nodejs/map.jinja' import dependencies, users -%}
 
 include:
   - ..package
@@ -8,7 +7,7 @@ Required packages for compiling NodeJS are available:
   pkg.installed:
     - pkgs: {{ dependencies }}
 
-{%- for user in asdf.users | selectattr('asdf.nodejs') %}
+{%- for user in users %}
   {# ugly workaround for uglier statement
     {%- set versions = user.nodejs if user.nodejs is iterable and (user.nodejs is not string and user.nodejs is not mapping) else [user.nodejs] %}#}
   {%- set versions = user.nodejs if user.nodejs.__class__.__name__ == 'list' else [user.nodejs if user.nodejs is not sameas True else 'latest'] %}

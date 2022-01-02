@@ -1,6 +1,6 @@
-{%- from 'tool-asdf/map.jinja' import asdf %}
+{%- from 'tool-asdf/nodejs/map.jinja' import users %}
 
-{%- for user in asdf.users | rejectattr('xdg', 'sameas', False) %}
+{%- for user in users | rejectattr('xdg', 'sameas', False) %}
 asdf node plugin global configuration is migrated to XDG_CONFIG_HOME for user '{{ user.name }}':
   file.rename:
     - name: {{ user.xdg.config }}/asdf/default-npm-packages
@@ -12,7 +12,7 @@ asdf node uses XDG dirs during this salt run:
     - value:
         ASDF_NPM_DEFAULT_PACKAGES_FILE: "{{ user.xdg.config }}/asdf/default-npm-packages"
 
-  {%- if user.persistenv %}
+  {%- if user.get('persistenv') %}
 asdf node plugin knows about XDG location for user '{{ user.name }}':
   file.append:
     - name: {{ user.home }}/{{ user.persistenv }}

@@ -1,6 +1,6 @@
-{%- from 'tool-asdf/map.jinja' import asdf %}
+{%- from 'tool-asdf/direnv/init.sls' import users %}
 
-{%- for user in asdf.users | selectattr('asdf.direnv') | selectattr('asdf.integrate-direnv') %}
+{%- for user in users | selectattr('asdf.integrate-direnv', 'defined') | selectattr('asdf.integrate-direnv') %}
 asdf is integrated into direnv for '{{ user.name }}':
   file.append:
     - name: {{ user.xdg.config }}/direnv/direnvrc

@@ -1,6 +1,6 @@
-{%- from 'tool-asdf/map.jinja' import asdf %}
+{%- from 'tool-asdf/ruby/map.jinja' import users %}
 
-{%- for user in asdf.users | rejectattr('xdg', 'sameas', False) %}
+{%- for user in users %}
 asdf ruby plugin global configuration is migrated to XDG_CONFIG_HOME for user '{{ user.name }}':
   file.rename:
     - name: {{ user.xdg.config }}/asdf/default-gems
@@ -12,7 +12,7 @@ asdf python uses XDG dirs during this salt run:
     - value:
         ASDF_GEM_DEFAULT_PACKAGES_FILE: "{{ user.xdg.config }}/asdf/default-gems"
 
-  {%- if user.persistenv %}
+  {%- if user.get('persistenv') %}
 asdf python plugin knows about XDG location for user '{{ user.name }}':
   file.append:
     - name: {{ user.home }}/{{ user.persistenv }}

@@ -1,5 +1,7 @@
-{# see https://github.com/nodejs/node/blob/master/BUILDING.md#building-nodejs-on-supported-platforms #}
+{%- from 'tool-asdf/map.jinja' import asdf %}
+{%- set users = asdf.users | selectattr('asdf.nodejs', 'defined') | list -%} {# casting to list ensures it can be imported #}
 
+{# see https://github.com/nodejs/node/blob/master/BUILDING.md#building-nodejs-on-supported-platforms #}
 {%- set dependencies = salt['grains.filter_by']({
     'Arch': ['python', 'gcc', 'make', 'python-pip'],
     'Debian': ['python3', 'g++', 'make', 'python3-pip'],

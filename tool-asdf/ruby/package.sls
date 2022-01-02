@@ -1,5 +1,4 @@
-{%- from 'tool-asdf/map.jinja' import asdf %}
-{%- from 'tool-asdf/ruby/map.jinja' import dependencies -%}
+{%- from 'tool-asdf/ruby/map.jinja' import dependencies, users -%}
 
 include:
   - ..package
@@ -8,7 +7,7 @@ Required packages for compiling Ruby are available:
   pkg.installed:
     - pkgs: {{ dependencies }}
 
-{%- for user in asdf.users | selectattr('asdf.ruby') %}
+{%- for user in users %}
   {# ugly workaround for uglier statement
     {%- set versions = user.ruby if user.ruby is iterable and (user.ruby is not string and user.ruby is not mapping) else [user.ruby] %}#}
   {%- set versions = user.ruby if user.ruby.__class__.__name__ == 'list' else [user.ruby if user.ruby is not sameas True else 'latest'] %}

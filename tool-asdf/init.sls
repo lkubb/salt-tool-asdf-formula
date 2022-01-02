@@ -6,10 +6,10 @@ include:
   - .xdg
 {%- endif %}
 {%- for tool in tools %}
-  {%- if asdf.users | selectattr('asdf.' ~ tool) %}
+  {%- if asdf.users | selectattr('asdf.' ~ tool, 'defined') %}
   - .{{ tool }}
   {%- endif %}
 {%- endfor %}
-{%- if asdf.users | selectattr('asdf.system') %}
+{%- if asdf.users | selectattr('asdf.system', 'defined') %}
   - .system
 {%- endif %}

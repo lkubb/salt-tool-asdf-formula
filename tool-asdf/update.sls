@@ -1,6 +1,6 @@
 {%- from 'tool-asdf/map.jinja' import asdf %}
 
-{%- if asdf.users | selectattr('system') %}
+{%- if asdf.users | selectattr('asdf.system', 'defined') %}
 include:
   - .system
 {%- endif %}
@@ -11,7 +11,7 @@ asdf is updated to latest version:
 {%- else %}
   pkg.latest:
 {%- endif %}
-    - name: {{ asdf.package }}
+    - name: asdf
 
 {%- for user in asdf.users %}
 asdf plugins are up to date:

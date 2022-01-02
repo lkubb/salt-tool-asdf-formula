@@ -1,5 +1,7 @@
-{# see https://github.com/asdf-community/asdf-php/blob/master/.github/workflows/workflow.yml and https://github.com/asdf-community/asdf-php#macos #}
+{%- from 'tool-asdf/map.jinja' import asdf %}
+{%- set users = asdf.users | selectattr('asdf.php', 'defined') | list -%} {# casting to list ensures it can be imported #}
 
+{# see https://github.com/asdf-community/asdf-php/blob/master/.github/workflows/workflow.yml and https://github.com/asdf-community/asdf-php#macos #}
 {%- set dependencies = salt['grains.filter_by']({
     'Debian': [
       'autoconf', 'bison', 'build-essential', 'curl',

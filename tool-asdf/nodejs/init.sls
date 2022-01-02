@@ -1,7 +1,7 @@
-{%- from 'tool-asdf/map.jinja' import asdf %}
+{%- from 'tool-asdf/nodejs/map.jinja' import users %}
 
 include:
-{%- if asdf.users | rejectattr('xdg', 'sameas', False) %}
+{%- if users | rejectattr('xdg', 'sameas', False) %}
   - .xdg
 {%- endif %}
   - .package

@@ -1,7 +1,8 @@
 {%- from 'tool-asdf/map.jinja' import asdf %}
+{%- set users = asdf.users | selectattr('asdf.rust', 'defined') | list -%} {# casting to list ensures it can be imported #}
 
 include:
-{%- if asdf.users | rejectattr('xdg', 'sameas', False) %}
+{%- if users | rejectattr('xdg', 'sameas', False) %}
   - .xdg
 {%- endif %}
   - .package

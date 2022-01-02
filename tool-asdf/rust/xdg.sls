@@ -1,6 +1,6 @@
-{%- from 'tool-asdf/map.jinja' import asdf %}
+{%- from 'tool-asdf/rust/init.sls' import users %}
 
-{%- for user in asdf.users | rejectattr('xdg', 'sameas', False) %}
+{%- for user in users | rejectattr('xdg', 'sameas', False) %}
 asdf Rust plugin global configuration is migrated to XDG_CONFIG_HOME for user '{{ user.name }}':
   file.rename:
     - name: {{ users.xdg.config }}/asdf/.default-cargo-crates
@@ -14,7 +14,7 @@ asdf Rust uses XDG dirs during this salt run:
     - value:
         ASDF_CRATE_DEFAULT_PACKAGES_FILE: "{{ users.xdg.config }}/asdf"
 
-  {%- if user.persistenv %}
+  {%- if user.get('persistenv') %}
 asdf Rust plugin knows about XDG location for user '{{ user.name }}':
   file.append:
     - name: {{ user.home }}/{{ user.persistenv }}

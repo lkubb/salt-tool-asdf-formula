@@ -1,6 +1,6 @@
-{%- from 'tool-asdf/map.jinja' import asdf %}
+{%- from 'tool-asdf/direnv/init.sls' import users %}
 
-{%- for user in asdf.users | selectattr('asdf.direnv') %}
+{%- for user in users | selectattr('rchook', 'defined') %}
 direnv is hooked to shell for '{{ user.name }}':
   file.append:
     - name: {{ user.home }}/{{ user.hook }}

@@ -1,9 +1,9 @@
-{%- from 'tool-asdf/map.jinja' import asdf %}
+{%- from 'tool-asdf/direnv/init.sls' import users %}
 
 include:
   - ..package
 
-{%- for user in asdf.users | selectattr('asdf.direnv') %}
+{%- for user in users %}
   {# ugly workaround for uglier statement
     {%- set versions = user.direnv if user.direnv is iterable and (user.direnv is not string and user.direnv is not mapping) else [user.direnv] %}#}
   {%- set versions = user.direnv if user.direnv.__class__.__name__ == 'list' else [user.direnv if user.direnv is not sameas True else 'latest'] %}

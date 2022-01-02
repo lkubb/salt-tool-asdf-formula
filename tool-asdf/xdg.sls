@@ -26,7 +26,7 @@ asdf uses XDG dirs during this salt run:
         ASDF_DATA_DIR: "{{ user.xdg.data }}/asdf"
         ASDF_DEFAULT_TOOL_VERSIONS_FILENAME: "{{ user.xdg.config }}/asdf/tool-versions"
 
-  {%- if user.persistenv %}
+  {%- if user.get('persistenv') %}
 asdf knows about XDG locations for user '{{ user.name }}':
   file.append:
     - name: {{ user.home }}/{{ user.persistenv }}
