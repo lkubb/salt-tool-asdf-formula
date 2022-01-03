@@ -7,5 +7,5 @@ User '{{ user.name }} uses {{ tool }} {{ version }} by default:
     - name: {{ tool }}
     - version: {{ version }}
     - user: {{ user.name }}
-  {%- endif %}
+  {%- endfor %}
 {%- endfor %}
