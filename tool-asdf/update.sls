@@ -1,6 +1,6 @@
 {%- from 'tool-asdf/map.jinja' import asdf %}
 
-{%- if asdf.users | selectattr('asdf.system', 'defined') %}
+{%- if asdf.users | selectattr('asdf.system', 'defined') | list %}
 include:
   - .system
 {%- endif %}

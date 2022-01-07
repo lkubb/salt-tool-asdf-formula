@@ -4,9 +4,9 @@
 
 include:
   - .package
-{%- if users | selectattr('rchook', 'defined') %}
+{%- if users | selectattr('rchook', 'defined') | list %}
   - .hook
 {%- endif %}
-{%- if users | selectattr('asdf.integrate-direnv', 'defined') | selectattr('asdf.integrate-direnv') %}
+{%- if users | selectattr('asdf.integrate-direnv', 'defined') | selectattr('asdf.integrate-direnv') | list %}
   - .integrate
 {%- endif %}

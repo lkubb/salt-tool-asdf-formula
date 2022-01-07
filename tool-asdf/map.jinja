@@ -57,9 +57,7 @@ state: {{ salt['cmd.run']('[ -n "$XDG_STATE_HOME" ] && echo "${XDG_STATE_HOME}" 
   {#- normalize tool versions here, not in the states -#}
   {%- for tool in tools %}
     {%- if users[user].asdf[tool] is defined %}
-      {# ugly workaround for uglier statement (should have broken it up, but it works. problem there is no inbuilt test for is list)
-      {%- set versions = users[user].asdf[tool] if users[user].asdf[tool] is iterable and (users[user].asdf[tool] is not string and users[user].asdf[tool] is not mapping) else [users[user].asdf[tool]] %}#}
-      {%- set versions = users[user].asdf[tool] if users[user].asdf[tool].__class__.__name__ == 'list' else [users[user].asdf[tool] if users[user].asdf[tool] is not sameas True else 'latest'] %}
+      {%- set versions = users[user].asdf[tool] if users[user].asdf[tool] | is_list else [users[user].asdf[tool] if users[user].asdf[tool] is not sameas True else 'latest'] %}
       {%- do users[user].asdf.update({tool: versions}) %}
     {%- endif %}
   {%- endfor %}
