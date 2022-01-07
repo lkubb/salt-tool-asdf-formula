@@ -8,16 +8,13 @@ Required packages for compiling Ruby are available:
     - pkgs: {{ dependencies }}
 
 {%- for user in users %}
-  {# ugly workaround for uglier statement
-    {%- set versions = user.ruby if user.ruby is iterable and (user.ruby is not string and user.ruby is not mapping) else [user.ruby] %}#}
-  {%- set versions = user.ruby if user.ruby.__class__.__name__ == 'list' else [user.ruby if user.ruby is not sameas True else 'latest'] %}
-  {%- for version in versions %}
+  {%- for version in user.asdf.ruby %}
 Ruby {{ version }} is installed for user '{{ user.name }}':
   asdf.version_installed:
     - name: ruby
     - version: {{ version }}
     - user: {{ user.name }}
     - require:
-      - sls: ..package
+      - asdf setup is completed
   {%- endfor %}
 {%- endfor %}

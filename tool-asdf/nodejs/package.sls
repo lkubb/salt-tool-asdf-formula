@@ -8,16 +8,13 @@ Required packages for compiling NodeJS are available:
     - pkgs: {{ dependencies }}
 
 {%- for user in users %}
-  {# ugly workaround for uglier statement
-    {%- set versions = user.nodejs if user.nodejs is iterable and (user.nodejs is not string and user.nodejs is not mapping) else [user.nodejs] %}#}
-  {%- set versions = user.nodejs if user.nodejs.__class__.__name__ == 'list' else [user.nodejs if user.nodejs is not sameas True else 'latest'] %}
-  {%- for version in versions %}
+  {%- for version in user.asdf.nodejs %}
 NodeJS {{ version }} is installed for user '{{ user.name }}':
   asdf.version_installed:
     - name: nodejs
     - version: {{ version }}
     - user: {{ user.name }}
     - require:
-      - sls: ..package
+      - asdf setup is completed
   {%- endfor %}
 {%- endfor %}

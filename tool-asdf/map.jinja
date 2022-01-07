@@ -2,6 +2,20 @@
 {%- set asdf = salt['pillar.get']('tool:asdf', {'users': {}}, merge=True) -%}
 {%- set users = {} -%}
 
+{%- do asdf.update({'_package': 'asdf'}) -%}
+
+{%- set default_confdir = '/.asdf' -%}
+
+{%- set tools = [
+  'golang',
+  'nodejs',
+  'php',
+  'python',
+  'ruby',
+  'rust',
+  ]
+-%}
+
 {#- rejectattr filter does not fit with mapping. need to filter out users before merging default values -#}
 {%- for tool_user, tool_user_conf in salt['pillar.get']('tool:users', {}).items() -%}
 {#- by default, install tool if it was targeted. explicitly deny for a specific user to override -#}
@@ -36,17 +50,19 @@ data: {{ salt['cmd.run']('[ -n "$XDG_DATA_HOME" ] && echo "${XDG_DATA_HOME}" || 
 state: {{ salt['cmd.run']('[ -n "$XDG_STATE_HOME" ] && echo "${XDG_STATE_HOME}" || echo "${HOME}/.local/state"', runas=user) }}
     {%- endload -%}
     {%- do users[user].update({'xdg': xdg}) -%}
-  {%- endif -%}
+    {%- do users[user]['_asdf'].update({'confdir': xdg.data ~ '/cargo'}) -%}
+  {%- else -%}
+    {%- do users[user]['_asdf'].update({'confdir': users[user].home + default_confdir}) -%}
+  {%- endif %}
+  {#- normalize tool versions here, not in the states -#}
+  {%- for tool in tools %}
+    {%- if users[user].asdf[tool] is defined %}
+      {# ugly workaround for uglier statement (should have broken it up, but it works. problem there is no inbuilt test for is list)
+      {%- set versions = users[user].asdf[tool] if users[user].asdf[tool] is iterable and (users[user].asdf[tool] is not string and users[user].asdf[tool] is not mapping) else [users[user].asdf[tool]] %}#}
+      {%- set versions = users[user].asdf[tool] if users[user].asdf[tool].__class__.__name__ == 'list' else [users[user].asdf[tool] if users[user].asdf[tool] is not sameas True else 'latest'] %}
+      {%- do users[user].asdf.update({tool: versions}) %}
+    {%- endif %}
+  {%- endfor %}
 {%- endfor -%}
 
 {%- do asdf.update({'users': users.values() | list}) -%}
-
-{%- set tools = [
-  'golang',
-  'nodejs',
-  'php',
-  'python',
-  'ruby',
-  'rust',
-  ]
--%}

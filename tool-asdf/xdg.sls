@@ -9,15 +9,25 @@ asdf configuration is migrated to XDG_CONFIG_HOME for user '{{ user.name }}':
     - names:
       - {{ user.xdg.config }}/asdf/tool-versions:
         - source: {{ user.home }}/.tool-versions
+        - onlyif:
+          - test -e {{ user.home }}/.tool-versions
       - {{ user.xdg.config }}/asdf/asdfrc:
         - source: {{ user.home }}/.asdfrc
+        - onlyif:
+          - test -e {{ user.home }}/.asdfrc
     - makedirs: true
+    - prereq_in:
+      - asdf setup is completed
 
 asdf data is migrated to XDG_DATA_HOME for user '{{ user.name }}':
   file.rename:
     - name: {{ user.xdg.data }}/asdf
     - source: {{ user.home }}/.asdf
     - makedirs: true
+    - onlyif:
+      - test -d {{ user.home }}/.asdf
+    - prereq_in:
+      - asdf setup is completed
 
 asdf uses XDG dirs during this salt run:
   environ.setenv:
@@ -25,6 +35,8 @@ asdf uses XDG dirs during this salt run:
         ASDF_CONFIG_FILE: "{{ user.xdg.config }}/asdf/asdfrc"
         ASDF_DATA_DIR: "{{ user.xdg.data }}/asdf"
         ASDF_DEFAULT_TOOL_VERSIONS_FILENAME: "{{ user.xdg.config }}/asdf/tool-versions"
+    - prereq_in:
+      - asdf setup is completed
 
   {%- if user.get('persistenv') %}
 asdf knows about XDG locations for user '{{ user.name }}':
@@ -37,5 +49,7 @@ asdf knows about XDG locations for user '{{ user.name }}':
     - user: {{ user.name }}
     - group: {{ user.group }}
     - mode: '0600'
+    - prereq_in:
+      - asdf setup is completed
   {%- endif %}
 {%- endfor %}

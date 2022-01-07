@@ -8,16 +8,13 @@ Required packages for compiling Python are available:
     - pkgs: {{ dependencies }}
 
 {%- for user in users %}
-  {# ugly workaround for uglier statement
-    {%- set versions = user.python if user.python is iterable and (user.python is not string and user.python is not mapping) else [user.python] %}#}
-  {%- set versions = user.python if user.python.__class__.__name__ == 'list' else [user.python if user.python is not sameas True else 'latest'] %}
-  {%- for version in versions %}
+  {%- for version in user.asdf.python %}
 Python {{ version }} is installed for user '{{ user.name }}':
   asdf.version_installed:
     - name: python
     - version: {{ version }}
     - user: {{ user.name }}
     - require:
-      - sls: ..package
+      - asdf setup is completed
   {%- endfor %}
 {%- endfor %}

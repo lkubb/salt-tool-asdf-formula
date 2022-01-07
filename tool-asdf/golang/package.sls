@@ -8,16 +8,13 @@ Required packages for compiling Go are available:
     - pkgs: {{ dependencies }}
 
 {%- for user in users %}
-  {# ugly workaround for uglier statement
-    {%- set versions = user.golang if user.golang is iterable and (user.golang is not string and user.golang is not mapping) else [user.golang] %}#}
-  {%- set versions = user.golang if user.golang.__class__.__name__ == 'list' else [user.golang if user.golang is not sameas True else 'latest'] %}
-  {%- for version in versions %}
+  {%- for version in user.asdf.golang %}
 Go {{ version }} is installed for user '{{ user.name }}':
   asdf.version_installed:
     - name: golang
     - version: {{ version }}
     - user: {{ user.name }}
     - require:
-      - sls: ..package
+      - asdf setup is completed
   {%- endfor %}
 {%- endfor %}
