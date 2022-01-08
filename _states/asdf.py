@@ -4,7 +4,7 @@ Managing asdf plugins and their versions
 
 """
 
-import logging
+# import logging
 import salt.exceptions
 
 # import salt.utils.platform

@@ -10,6 +10,7 @@ __virtualname__ = "asdf"
 def __virtual__():
     return __virtualname__
 
+
 def _which(user=None):
     if e := salt["cmd.run"]("command -v asdf", runas=user):
         return e
@@ -46,7 +47,8 @@ def install_plugin(name, user=None):
 
     e = _which(user)
 
-    return __salt__['cmd.retcode']("{} plugin-add '{}'".format(e, name), runas=user)
+    # retcode returns shell-style retcode, need inverse
+    return not __salt__['cmd.retcode']("{} plugin-add '{}'".format(e, name), runas=user)
 
 
 def install_version(name, version, user=None):
@@ -55,7 +57,7 @@ def install_version(name, version, user=None):
 
     e = _which(user)
 
-    return __salt__['cmd.retcode']("{} install '{}' '{}'".format(e, name, version), runas=user)
+    return not __salt__['cmd.retcode']("{} install '{}' '{}'".format(e, name, version), runas=user)
 
 
 def remove_plugin(name, user=None):
@@ -64,7 +66,7 @@ def remove_plugin(name, user=None):
 
     e = _which(user)
 
-    return __salt__['cmd.retcode']("{} plugin-remove '{}'".format(e, name), runas=user)
+    return not __salt__['cmd.retcode']("{} plugin-remove '{}'".format(e, name), runas=user)
 
 
 def remove_version(name, version, user=None):
@@ -76,7 +78,7 @@ def remove_version(name, version, user=None):
 
     e = _which(user)
 
-    return __salt__['cmd.retcode']("{} uninstall '{}' '{}'".format(e, name, version), runas=user)
+    return not __salt__['cmd.retcode']("{} uninstall '{}' '{}'".format(e, name, version), runas=user)
 
 
 def update_plugin(name, user=None):
@@ -85,13 +87,13 @@ def update_plugin(name, user=None):
 
     e = _which(user)
 
-    return __salt__['cmd.retcode']("{} plugin-update '{}'".format(e, name), runas=user)
+    return not __salt__['cmd.retcode']("{} plugin-update '{}'".format(e, name), runas=user)
 
 
 def update_plugins(user=None):
     e = _which(user)
 
-    return __salt__['cmd.retcode']("{} plugin-update --all".format(e), runas=user)
+    return not __salt__['cmd.retcode']("{} plugin-update --all".format(e), runas=user)
 
 
 def set_version(name, version, user=None, cwd=''):
@@ -101,14 +103,14 @@ def set_version(name, version, user=None, cwd=''):
     e = _which(user)
 
     if cwd:
-        return __salt__['cmd.retcode']("{} local '{}' '{}'".format(e, name, version), cwd=cwd, runas=user)
+        return not __salt__['cmd.retcode']("{} local '{}' '{}'".format(e, name, version), cwd=cwd, runas=user)
 
-    return __salt__['cmd.retcode']("{} global '{}' '{}'".format(e, name, version), runas=user)
+    return not __salt__['cmd.retcode']("{} global '{}' '{}'".format(e, name, version), runas=user)
 
 
 def reshim(user=None, cwd=''):
     e = _which(user)
-    return __salt__['cmd.retcode']('{} reshim'.format(e), runas=user)
+    return not __salt__['cmd.retcode']('{} reshim'.format(e), runas=user)
 
 
 def _list_installed(user=None):
