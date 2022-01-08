@@ -57,7 +57,7 @@ def plugin_installed(name, user=None):
     return ret
 
 
-def plugin_uptodate(name=None, user=None):
+def plugin_latest(name=None, user=None):
     """
     Make sure asdf plugins are up to date.
 
@@ -65,7 +65,7 @@ def plugin_uptodate(name=None, user=None):
 
     .. code-block:: bash
 
-        salt '*' asdf.uptodate python
+        salt '*' asdf.plugin_latest python
 
     name
         The name of the plugin to update.
