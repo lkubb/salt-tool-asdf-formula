@@ -1,6 +1,7 @@
 {%- from 'tool-asdf/map.jinja' import asdf %}
 
 {%- set users = asdf.users | selectattr('asdf.direnv', 'defined') | list -%} {# casting to list ensures it can be imported #}
+{%- set pkg_mode = 'latest' if asdf.get('update_auto') else 'installed' %}
 
 include:
   - .package

@@ -15,6 +15,6 @@ asdf is updated to latest version:
 
 {%- for user in asdf.users %}
 asdf plugins are up to date:
-  asdf.plugin_uptodate:
+  asdf.plugin_latest:
     - user: {{ user.name }}
 {%- endfor %}

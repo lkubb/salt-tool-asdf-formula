@@ -1,15 +1,18 @@
 tool:
   asdf:
-    defaults:                           # default asdf config values all users go here
-      python: latest
+    update_auto: true               # keep asdf and plugin dependencies updated to latest version on
+                                    # subsequent runs (for Linux, brew does that anyways)
+    defaults:                       # default asdf config values for users go here
+      python: 3.10.1
   users:
     user:
       xdg: true                         # force xdg dirs
       dotconfig: true                   # sync this user's config from a dotfiles repo available as salt://dotconfig/<user>/asdf or salt://dotconfig/asdf
       persistenv: '.config/zsh/zshenv'  # persist asdf env vars to use xdg dirs permanently (will be appended to file relative to $HOME)
-      rchook: '.config/zsh/zshrc'       # runcom that loads hooks, if you want to autoconfigure it (eg for direnv)
+      rchook: '.config/zsh/zshrc'       # runcom that loads hooks, if you want to autoconfigure your shell (eg for direnv)
       asdf:
+        update_auto: true               # keep plugins updated to latest version on subsequent runs
         python: latest                  # plugin: version to install. can be True (for latest), list or string
         integrate-direnv: true          # if direnv is installed, make sure envrc files can use asdf
-        system:
+        system:                         # user-specific default of global tool version
           python: latest

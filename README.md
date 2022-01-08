@@ -50,9 +50,10 @@ user:
   persistenv: '.config/zsh/zshenv'  # persist asdf env vars to use xdg dirs permanently (will be appended to file relative to $HOME)
   rchook: '.config/zsh/zshrc'       # runcom that loads hooks, if you want to autoconfigure your shell (eg for direnv)
   asdf:
+    update_auto: true               # keep plugins updated to latest version on subsequent runs
     python: latest                  # plugin: version to install. can be True (for latest), list or string
     integrate-direnv: true          # if direnv is installed, make sure envrc files can use asdf
-    system:                         # user-specific default of tool version
+    system:                         # user-specific default of global tool version
       python: latest
 ```
 
@@ -60,6 +61,21 @@ user:
 ```yaml
 tool:
   asdf:
-    defaults:     # default asdf config values for users go here
-      python: latest
+    update_auto: true               # keep asdf and plugin dependencies updated to latest version on
+                                    # subsequent runs (for Linux, brew does that anyways)
+    defaults:                       # default asdf config values for users go here
+      python: 3.10.1
+```
+
+## Todo
+- generalize plugins to definitions to avoid repetition. maybe like that:
+```yaml
+python:
+  dependencies:
+    - list
+    - of
+    - pkgs
+  xdg_vars:
+    config:
+      - GIMME_BLOODY_XDG_YO: .default-stuff
 ```

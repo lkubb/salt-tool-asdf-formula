@@ -1,4 +1,4 @@
-{%- from '/Users/jeanluc/Desktop/repos/salt/asdf/tool-asdf/map.jinja' import asdf, tools %}
+{%- from 'tool-asdf/map.jinja' import asdf, tools %}
 
 include:
   - .package

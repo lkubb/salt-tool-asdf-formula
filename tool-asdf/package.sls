@@ -1,5 +1,11 @@
+{%- from 'tool-asdf/map.jinja' import asdf -%}
+
+{%- set mode = 'latest' if asdf.get('update_auto')
+                        and not grains['kernel'] == 'Darwin'
+          else 'installed' %}
+
 asdf is installed:
-  pkg.installed:
+  pkg.{{ mode }}:
     - name: asdf
 
 asdf setup is completed:

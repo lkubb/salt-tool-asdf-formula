@@ -57,7 +57,7 @@ def plugin_installed(name, user=None):
     return ret
 
 
-def plugin_latest(name=None, user=None):
+def plugin_latest(name, user=None):
     """
     Make sure asdf plugins are up to date.
 
@@ -68,7 +68,7 @@ def plugin_latest(name=None, user=None):
         salt '*' asdf.plugin_latest python
 
     name
-        The name of the plugin to update.
+        The name of the plugin to update. Use 'all' to update all plugins.
 
     user
         The username to update the plugin for. Defaults to salt user.
@@ -82,7 +82,7 @@ def plugin_latest(name=None, user=None):
                 ret["result"] = None
                 ret["comment"] = "All plugins would have been updated for user '{}'.".format(user)
                 ret["changes"] = {'updated': 'all'}
-            elif __salt__["asdf.update_plugins"](user):
+            elif __salt__["asdf.update_plugins"](None, user):
                 ret["comment"] = "All plugins were updated for user '{}'.".format(user)
                 ret["changes"] = {'updated': 'all'}
             else:

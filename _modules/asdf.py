@@ -90,7 +90,7 @@ def update_plugin(name, user=None):
     return not __salt__['cmd.retcode']("{} plugin-update '{}'".format(e, name), runas=user)
 
 
-def update_plugins(user=None):
+def update_plugins(name=None, user=None):
     e = _which(user)
 
     return not __salt__['cmd.retcode']("{} plugin-update --all".format(e), runas=user)
