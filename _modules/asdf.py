@@ -12,10 +12,10 @@ def __virtual__():
 
 
 def _which(user=None):
-    if e := salt["cmd.run"]("command -v asdf", runas=user):
+    if e := __salt__["cmd.run_stdout"]("command -v asdf", runas=user):
         return e
     if salt.utils.platform.is_darwin():
-        if p := salt["cmd.run"]("brew --prefix asdf", runas=user):
+        if p := __salt__["cmd.run_stdout"]("brew --prefix asdf", runas=user):
             return p + "/libexec/bin/asdf"
     raise CommandExecutionError("Could not find asdf executable.")
 
@@ -115,7 +115,7 @@ def reshim(user=None, cwd=''):
 
 def _list_installed(user=None):
     e = _which(user)
-    installed = __salt__['cmd.run']('{} list'.format(e), runas=user, raise_err=True)
+    installed = __salt__['cmd.run_stdout']('{} list'.format(e), runas=user, raise_err=True)
 
     parsed = {}
     cur = ''
@@ -129,25 +129,25 @@ def _list_installed(user=None):
 
 def list_available_plugins(user=None):
     e = _which(user)
-    available = __salt__['cmd.run']('{} plugin-list-all'.format(e), runas=user, raise_err=True)
-    return [x.split(' ')[0] for x in available.splitlines()]
+    available = __salt__['cmd.run_stdout']('{} plugin-list-all'.format(e), runas=user, raise_err=True)
+    return [x.split(' ')[0] for x in available.splitlines() if 'updating ' not in x]
 
 
 def list_installed_plugins(user=None):
     e = _which(user)
-    installed = __salt__['cmd.run']('{} plugin-list'.format(e), runas=user, raise_err=True)
+    installed = __salt__['cmd.run_stdout']('{} plugin-list'.format(e), runas=user, raise_err=True)
     return installed.splitlines()
 
 
 def list_available_versions(name, user=None):
     e = _which(user)
-    available = __salt__['cmd.run']('{} list-all \'{}\''.format(e, name), runas=user, raise_err=True)
+    available = __salt__['cmd.run_stdout']('{} list-all \'{}\''.format(e, name), runas=user, raise_err=True)
     return available.splitlines()
 
 
 def list_installed_versions(name, user=None):
     e = _which(user)
-    installed = __salt__['cmd.run']('{} list \'{}\''.format(e, name), runas=user, raise_err=True)
+    installed = __salt__['cmd.run_stdout']('{} list \'{}\''.format(e, name), runas=user, raise_err=True)
     if 'No versions installed' in installed:
         return []
     return installed.splitlines()
