@@ -17,9 +17,8 @@ def _which(user=None):
         return e
     if salt.utils.platform.is_darwin():
         if p := __salt__["cmd.run_stdout"]("brew --prefix asdf", runas=user):
-            e = p + "/libexec/bin/asdf"
-            __salt__['log.debug']('Found asdf executable at {}'.format(e))
-            return e
+            __salt__['log.debug']('Found asdf executable at {}'.format(p))
+            return p
     raise CommandExecutionError("Could not find asdf executable.")
 
 
