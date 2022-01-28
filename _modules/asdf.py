@@ -12,11 +12,15 @@ def __virtual__():
 
 
 def _which(user=None):
-    if e := __salt__["cmd.run_stdout"]("command -v asdf", runas=user):
+    e = __salt__["cmd.run_stdout"]("command -v asdf", runas=user)
+    # if e := __salt__["cmd.run_stdout"]("command -v asdf", runas=user)
+    if e:
         __salt__['log.debug']('Found asdf executable at {}'.format(e))
         return e
     if salt.utils.platform.is_darwin():
-        if p := __salt__["cmd.run_stdout"]("brew --prefix asdf", runas=user):
+        p = __salt__["cmd.run_stdout"]("brew --prefix asdf", runas=user)
+        # if p := __salt__["cmd.run_stdout"]("brew --prefix asdf", runas=user):
+        if p:
             __salt__['log.debug']('Found asdf executable at {}'.format(p))
             return p
     raise CommandExecutionError("Could not find asdf executable.")
