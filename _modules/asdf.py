@@ -36,6 +36,10 @@ def is_plugin_available(name, user=None):
 
 def is_version_installed(name, version, user=None):
     installed = _list_installed(user)
+
+    if 'latest' == version:
+        version = get_latest(name, user)
+
     if name in installed.keys() and version in installed[name]:
         return True
     return False
@@ -46,6 +50,11 @@ def is_version_available(name, version, user=None):
         raise CommandExecutionError('Requested plugin {} is not available in asdf.'.format(name))
     return str(version) in list_available_versions(name, user)
 
+
+def get_latest(name, user=None):
+    e = _which(user)
+
+    return __salt__['cmd.run_stdout']("{} latest '{}'".format(e, name), runas=user)
 
 def install_plugin(name, user=None):
     if not is_plugin_available(name, user):
@@ -116,6 +125,9 @@ def update_plugins(name=None, user=None):
 def set_version(name, version, user=None, cwd=''):
     if not is_version_installed(name, version, user):
         raise CommandExecutionError('{} version {} is not installed.'.format(name, version))
+
+    if 'latest' == version:
+        version = get_latest(name, user)
 
     e = _which(user)
 
