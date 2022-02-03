@@ -28,14 +28,23 @@ asdf Rust uses XDG dirs during this salt run:
   {%- endfor %}
 
   {%- if user.get('persistenv') %}
+
+persistenv file for asdf rust for user '{{ user.name }}' exists:
+  file.managed:
+    - name: {{ user.home }}/{{ user.persistenv }}
+    - user: {{ user.name }}
+    - group: {{ user.group }}
+    - mode: '0600'
+    - dir_mode: '0700'
+    - makedirs: true
+
 asdf Rust plugin knows about XDG location for user '{{ user.name }}':
   file.append:
     - name: {{ user.home }}/{{ user.persistenv }}
     - text: |
         export ASDF_PYTHON_DEFAULT_PACKAGES_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/asdf"
-    - user: {{ user.name }}
-    - group: {{ user.group }}
-    - mode: '0600'
+    - require:
+      - persistenv file for asdf rust for user '{{ user.name }}' exists
     - prereq_in:
     {%- for version in user.asdf.rust %}
       - Rust {{ version }} is installed for user '{{ user.name }}'

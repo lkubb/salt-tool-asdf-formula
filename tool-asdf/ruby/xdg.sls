@@ -26,13 +26,22 @@ asdf python uses XDG dirs during this salt run:
   {%- endfor %}
 
   {%- if user.get('persistenv') %}
+
+persistenv file for asdf ruby for user '{{ user.name }}' exists:
+  file.managed:
+    - name: {{ user.home }}/{{ user.persistenv }}
+    - user: {{ user.name }}
+    - group: {{ user.group }}
+    - mode: '0600'
+    - dir_mode: '0700'
+    - makedirs: true
+
 asdf python plugin knows about XDG location for user '{{ user.name }}':
   file.append:
     - name: {{ user.home }}/{{ user.persistenv }}
     - text: export ASDF_GEM_DEFAULT_PACKAGES_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/asdf/default-gems"
-    - user: {{ user.name }}
-    - group: {{ user.group }}
-    - mode: '0600'
+    - require:
+      - persistenv file for asdf ruby for user '{{ user.name }}' exists
     - prereq_in:
     {%- for version in user.asdf.ruby %}
       - Ruby {{ version }} is installed for user '{{ user.name }}'

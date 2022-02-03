@@ -39,6 +39,16 @@ asdf uses XDG dirs during this salt run:
       - asdf setup is completed
 
   {%- if user.get('persistenv') %}
+
+persistenv file for asdf for user '{{ user.name }}' exists:
+  file.managed:
+    - name: {{ user.home }}/{{ user.persistenv }}
+    - user: {{ user.name }}
+    - group: {{ user.group }}
+    - mode: '0600'
+    - dir_mode: '0700'
+    - makedirs: true
+
 asdf knows about XDG locations for user '{{ user.name }}':
   file.append:
     - name: {{ user.home }}/{{ user.persistenv }}
@@ -46,9 +56,8 @@ asdf knows about XDG locations for user '{{ user.name }}':
         export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/asdf/asdfrc"
         export ASDF_DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/asdf"
         export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME="${XDG_CONFIG_HOME:-$HOME/.config}/asdf/tool-versions"
-    - user: {{ user.name }}
-    - group: {{ user.group }}
-    - mode: '0600'
+    - require:
+      - persistenv file for asdf for user '{{ user.name }}' exists
     - prereq_in:
       - asdf setup is completed
   {%- endif %}
