@@ -17,7 +17,7 @@ def _which(user=None):
     if e:
         __salt__['log.debug']('Found asdf executable at {}'.format(e))
         if 'Apple' in __grains__['cpu_model'] and 'x86_64' == __grains__['cpuarch']:
-            p = 'arch -arm64 ' + p
+            e = 'arch -arm64 ' + e
         return e
     if salt.utils.platform.is_darwin():
         p = __salt__["cmd.run_stdout"]("brew --prefix asdf", runas=user)

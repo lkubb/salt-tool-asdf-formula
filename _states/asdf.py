@@ -271,18 +271,18 @@ def version_set(name, version, user=None, cwd=''):
     ret = {"name": name, "result": True, "comment": "", "changes": {}}
 
     try:
-        if not __salt__["asdf.is_version_installed"](name, user):
+        if not __salt__["asdf.is_version_installed"](name, version, user):
             ret["result"] = False
             ret["comment"] = "Requested tool version is not installed."
         elif __opts__["test"]:
             ret["result"] = None
             ret["comment"] = "{} version {} would have been set for user '{}'.".format(name, version, user)
             ret["comment"] += " globally." if not cwd else " in path '{}'.".format(cwd)
-            ret["changes"].append("Default {} {} version {}".format(name, 'local' if cwd else 'global', version))
+            ret["changes"] = "Default {} {} version {}".format(name, 'local' if cwd else 'global', version)
         elif __salt__["asdf.set_version"](name, version, user, cwd):
             ret["comment"] = "{} version {} was set for user '{}'.".format(name, version, user)
             ret["comment"] += " globally." if not cwd else " in path '{}'.".format(cwd)
-            ret["changes"].append("Default {} {} version {}".format(name, 'local' if cwd else 'global', version))
+            ret["changes"] = "Default {} {} version {}".format(name, 'local' if cwd else 'global', version)
         else:
             ret["result"] = False
             ret["comment"] = "Something went wrong while calling asdf."
