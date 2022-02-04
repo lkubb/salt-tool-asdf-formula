@@ -11,7 +11,7 @@ asdf ruby plugin global configuration is migrated to XDG_CONFIG_HOME for user '{
     - makedirs: true
     - onlyif:
       - test -e {{ user.home }}/.default-gems
-    - prereq_in:
+    - require_in:
   {%- for version in user.asdf.ruby %}
       - Ruby {{ version }} is installed for user '{{ user.name }}'
   {%- endfor %}
@@ -20,7 +20,7 @@ asdf python uses XDG dirs during this salt run:
   environ.setenv:
     - value:
         ASDF_GEM_DEFAULT_PACKAGES_FILE: "{{ user.xdg.config }}/asdf/default-gems"
-    - prereq_in:
+    - require_in:
   {%- for version in user.asdf.ruby %}
       - Ruby {{ version }} is installed for user '{{ user.name }}'
   {%- endfor %}
@@ -42,7 +42,7 @@ asdf python plugin knows about XDG location for user '{{ user.name }}':
     - text: export ASDF_GEM_DEFAULT_PACKAGES_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/asdf/default-gems"
     - require:
       - persistenv file for asdf ruby for user '{{ user.name }}' exists
-    - prereq_in:
+    - require_in:
     {%- for version in user.asdf.ruby %}
       - Ruby {{ version }} is installed for user '{{ user.name }}'
     {%- endfor %}

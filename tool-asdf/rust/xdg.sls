@@ -11,7 +11,7 @@ asdf Rust plugin global configuration is migrated to XDG_CONFIG_HOME for user '{
     - makedirs: true
     - onlyif:
       - test -e {{ user.home }}/.default-cargo-crates
-    - prereq_in:
+    - require_in:
   {%- for version in user.asdf.rust %}
       - Rust {{ version }} is installed for user '{{ user.name }}'
   {%- endfor %}
@@ -22,7 +22,7 @@ asdf Rust uses XDG dirs during this salt run:
   environ.setenv:
     - value:
         ASDF_CRATE_DEFAULT_PACKAGES_FILE: "{{ users.xdg.config }}/asdf"
-    - prereq_in:
+    - require_in:
   {%- for version in user.asdf.rust %}
       - Rust {{ version }} is installed for user '{{ user.name }}'
   {%- endfor %}
@@ -45,7 +45,7 @@ asdf Rust plugin knows about XDG location for user '{{ user.name }}':
         export ASDF_PYTHON_DEFAULT_PACKAGES_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/asdf"
     - require:
       - persistenv file for asdf rust for user '{{ user.name }}' exists
-    - prereq_in:
+    - require_in:
     {%- for version in user.asdf.rust %}
       - Rust {{ version }} is installed for user '{{ user.name }}'
     {%- endfor %}

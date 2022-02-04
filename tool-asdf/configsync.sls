@@ -18,6 +18,6 @@ Asdf configuration is synced for user '{{ user.name }}':
     - file_mode: keep
     - dir_mode: '0700'
     - makedirs: True
-    - prereq_in:
+    - require_in:
       - asdf setup is completed
 {%- endfor %}

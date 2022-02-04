@@ -16,7 +16,7 @@ asdf configuration is migrated to XDG_CONFIG_HOME for user '{{ user.name }}':
         - onlyif:
           - test -e {{ user.home }}/.asdfrc
     - makedirs: true
-    - prereq_in:
+    - require_in:
       - asdf setup is completed
 
 asdf data is migrated to XDG_DATA_HOME for user '{{ user.name }}':
@@ -26,7 +26,7 @@ asdf data is migrated to XDG_DATA_HOME for user '{{ user.name }}':
     - makedirs: true
     - onlyif:
       - test -d {{ user.home }}/.asdf
-    - prereq_in:
+    - require_in:
       - asdf setup is completed
 
 asdf uses XDG dirs during this salt run:
@@ -35,7 +35,7 @@ asdf uses XDG dirs during this salt run:
         ASDF_CONFIG_FILE: "{{ user.xdg.config }}/asdf/asdfrc"
         ASDF_DATA_DIR: "{{ user.xdg.data }}/asdf"
         ASDF_DEFAULT_TOOL_VERSIONS_FILENAME: "{{ user.xdg.config }}/asdf/tool-versions"
-    - prereq_in:
+    - require_in:
       - asdf setup is completed
 
   {%- if user.get('persistenv') %}
@@ -58,7 +58,7 @@ asdf knows about XDG locations for user '{{ user.name }}':
         export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME="${XDG_CONFIG_HOME:-$HOME/.config}/asdf/tool-versions"
     - require:
       - persistenv file for asdf for user '{{ user.name }}' exists
-    - prereq_in:
+    - require_in:
       - asdf setup is completed
   {%- endif %}
 {%- endfor %}

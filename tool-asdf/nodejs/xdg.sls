@@ -11,7 +11,7 @@ asdf node plugin global configuration is migrated to XDG_CONFIG_HOME for user '{
     - makedirs: true
     - onlyif:
       - test -e {{ user.home }}/.default-npm-packages
-    - prereq_in:
+    - require_in:
   {%- for version in user.asdf.nodejs %}
       - NodeJS {{ version }} is installed for user '{{ user.name }}'
   {%- endfor %}
@@ -20,7 +20,7 @@ asdf node uses XDG dirs during this salt run:
   environ.setenv:
     - value:
         ASDF_NPM_DEFAULT_PACKAGES_FILE: "{{ user.xdg.config }}/asdf/default-npm-packages"
-    - prereq_in:
+    - require_in:
   {%- for version in user.asdf.nodejs %}
       - NodeJS {{ version }} is installed for user '{{ user.name }}'
   {%- endfor %}
@@ -42,7 +42,7 @@ asdf node plugin knows about XDG location for user '{{ user.name }}':
     - text: export ASDF_NPM_DEFAULT_PACKAGES_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/asdf/default-npm-packages"
     - require:
       - persistenv file for asdf nodejs for user '{{ user.name }}' exists
-    - prereq_in:
+    - require_in:
     {%- for version in user.asdf.nodejs %}
       - NodeJS {{ version }} is installed for user '{{ user.name }}'
     {%- endfor %}
