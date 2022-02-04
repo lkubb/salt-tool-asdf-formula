@@ -16,11 +16,15 @@ def _which(user=None):
     # if e := __salt__["cmd.run_stdout"]("command -v asdf", runas=user)
     if e:
         __salt__['log.debug']('Found asdf executable at {}'.format(e))
+        if 'Apple' in __grains__['cpu_model'] and 'x86_64' == __grains__['cpuarch']:
+            p = 'arch -arm64 ' + p
         return e
     if salt.utils.platform.is_darwin():
         p = __salt__["cmd.run_stdout"]("brew --prefix asdf", runas=user)
         # if p := __salt__["cmd.run_stdout"]("brew --prefix asdf", runas=user):
         if p:
+            if 'Apple' in __grains__['cpu_model'] and 'x86_64' == __grains__['cpuarch']:
+                p = 'arch -arm64 ' + p
             __salt__['log.debug']('Found asdf executable at {}'.format(p))
             return p
     raise CommandExecutionError("Could not find asdf executable.")
