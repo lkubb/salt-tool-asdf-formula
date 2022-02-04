@@ -284,7 +284,7 @@ def version_set(name, version, user=None, cwd=''):
         if 'latest' == version:
             version = __salt__['asdf.get_latest'](name, user)
         if current == version:
-            ret["comment"] = "{} version {} is already used"
+            ret["comment"] = "{} version {} is already used".format(name, version)
             ret["comment"] += " globally." if not cwd else " in path '{}'.".format(cwd)
         elif __opts__["test"]:
             ret["result"] = None

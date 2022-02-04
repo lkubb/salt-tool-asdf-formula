@@ -1,11 +1,8 @@
-{%- from 'tool-asdf/php/map.jinja' import dependencies, users, pkg_mode -%}
+{%- from 'tool-asdf/php/map.jinja' import users -%}
 
 include:
   - ..package
-
-Required packages for compiling PHP are available:
-  pkg.{{ pkg_mode }}:
-    - pkgs: {{ dependencies }}
+  - .deps
 
 {%- for user in users %}
   {%- if user.asdf.get('update_auto') %}
@@ -25,5 +22,6 @@ PHP {{ version }} is installed for user '{{ user.name }}':
     - user: {{ user.name }}
     - require:
       - asdf setup is completed
+      - Required packages for compiling PHP are available
   {%- endfor %}
 {%- endfor %}
