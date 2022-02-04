@@ -1,5 +1,6 @@
 from salt.exceptions import CommandExecutionError
 # import logging
+import re
 
 import salt.utils.platform
 
@@ -190,3 +191,11 @@ def list_installed_versions(name, user=None):
     if 'No versions installed' in installed:
         return []
     return installed.splitlines()
+
+
+def get_current(name, cwd='', user=None):
+    if not cwd:
+        cwd = '/'
+    e = _which(user)
+    current = __salt__['cmd.run_stdout']('{} current \'{}\''.format(e, name), runas=user, cwd=cwd, raise_err=True)
+    return re.split('[\s]+', current)[1]

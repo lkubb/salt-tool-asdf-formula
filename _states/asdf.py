@@ -174,6 +174,7 @@ def version_installed(name, version, user=None):
     try:
         if __salt__["asdf.is_version_installed"](name, version, user):
             ret["comment"] = "Requested {} version {} is already installed.".format(name, version)
+            ret["changes"] = {}
             return ret
         if not __salt__["asdf.is_plugin_installed"](name, user):
             if __opts__["test"]:
@@ -181,6 +182,7 @@ def version_installed(name, version, user=None):
             elif not __salt["asdf.install_plugin"]:
                 ret["result"] = False
                 ret["comment"] = "Requested plugin is not installed and could not be installed automatically."
+                ret["changes"] = {}
                 return ret
             ret["changes"]["installed"].append("plugin '{}'.".format(name))
         if __opts__["test"]:
@@ -197,6 +199,8 @@ def version_installed(name, version, user=None):
         ret["result"] = False
         ret["comment"] = str(e)
 
+    if not ret["changes"]["installed"]:
+        ret["changes"] = {}
     return ret
 
 
@@ -274,15 +278,23 @@ def version_set(name, version, user=None, cwd=''):
         if not __salt__["asdf.is_version_installed"](name, version, user):
             ret["result"] = False
             ret["comment"] = "Requested tool version is not installed."
+            return ret
+
+        current = __salt__['asdf.get_current'](name, cwd, user)
+        if 'latest' == version:
+            version = __salt__['asdf.get_latest'](name, user)
+        if current == version:
+            ret["comment"] = "{} version {} is already used"
+            ret["comment"] += " globally." if not cwd else " in path '{}'.".format(cwd)
         elif __opts__["test"]:
             ret["result"] = None
-            ret["comment"] = "{} version {} would have been set for user '{}'.".format(name, version, user)
+            ret["comment"] = "{} version {} would have been set for user '{}'".format(name, version, user)
             ret["comment"] += " globally." if not cwd else " in path '{}'.".format(cwd)
-            ret["changes"] = "Default {} {} version {}".format(name, 'local' if cwd else 'global', version)
+            ret["changes"]["system default"] = "Default {} {} version {}".format(name, 'local' if cwd else 'global', version)
         elif __salt__["asdf.set_version"](name, version, user, cwd):
-            ret["comment"] = "{} version {} was set for user '{}'.".format(name, version, user)
+            ret["comment"] = "{} version {} was set for user '{}'".format(name, version, user)
             ret["comment"] += " globally." if not cwd else " in path '{}'.".format(cwd)
-            ret["changes"] = "Default {} {} version {}".format(name, 'local' if cwd else 'global', version)
+            ret["changes"]["system default"] = "Default {} {} version {}".format(name, 'local' if cwd else 'global', version)
         else:
             ret["result"] = False
             ret["comment"] = "Something went wrong while calling asdf."
