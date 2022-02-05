@@ -198,4 +198,6 @@ def get_current(name, cwd='', user=None):
         cwd = '/'
     e = _which(user)
     current = __salt__['cmd.run_stdout']('{} current \'{}\''.format(e, name), runas=user, cwd=cwd, raise_err=True)
+    if not current:
+        return None
     return re.split('[\s]+', current)[1]
