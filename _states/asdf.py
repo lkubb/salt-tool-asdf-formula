@@ -179,7 +179,7 @@ def version_installed(name, version, user=None):
         if not __salt__["asdf.is_plugin_installed"](name, user):
             if __opts__["test"]:
                 ret["result"] = None
-            elif not __salt["asdf.install_plugin"]:
+            elif not __salt__["asdf.install_plugin"]:
                 ret["result"] = False
                 ret["comment"] = "Requested plugin is not installed and could not be installed automatically."
                 ret["changes"] = {}
