@@ -46,7 +46,12 @@ The following shows an example of `tool-asdf` pillar configuration. Namespace it
 ```yaml
 user:
   xdg: true                         # force xdg dirs
-  dotconfig: true                   # sync this user's config from a dotfiles repo available as salt://dotconfig/<user>/asdf or salt://dotconfig/asdf
+  # sync this user's config from a dotfiles repo available as
+  # salt://dotconfig/<user>/asdf or salt://dotconfig/asdf
+  dotconfig:              # can be bool or mapping
+    file_mode: '0600'     # default: keep destination or salt umask (new)
+    dir_mode: '0700'      # default: 0700
+    clean: false          # delete files in target. default: false
   persistenv: '.config/zsh/zshenv'  # persist asdf env vars to use xdg dirs permanently (will be appended to file relative to $HOME)
   rchook: '.config/zsh/zshrc'       # runcom that loads hooks, if you want to autoconfigure your shell (eg for direnv)
   asdf:
