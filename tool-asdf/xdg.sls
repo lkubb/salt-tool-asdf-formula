@@ -4,6 +4,13 @@ include:
   - .package
 
 {%- for user in asdf.users | rejectattr('xdg', 'sameas', False) %}
+asdf config dir in XDG_CONFIG_HOME exists for user '{{ user.name }}':
+  file.directory:
+    - name: {{ user.xdg.config }}/asdf
+    - user: {{ user.name }}
+    - group: {{ user.group }}
+    - makedirs: true
+
 asdf configuration is migrated to XDG_CONFIG_HOME for user '{{ user.name }}':
   file.rename:
     - names:
@@ -15,7 +22,8 @@ asdf configuration is migrated to XDG_CONFIG_HOME for user '{{ user.name }}':
         - source: {{ user.home }}/.asdfrc
         - onlyif:
           - test -e {{ user.home }}/.asdfrc
-    - makedirs: true
+    - require:
+      - asdf config dir in XDG_CONFIG_HOME exists for user '{{ user.name }}'
     - require_in:
       - asdf setup is completed
 
