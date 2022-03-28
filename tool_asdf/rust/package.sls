@@ -23,7 +23,7 @@ Rust plugin is up to date for user '{{ user.name }}':
 Rust {{ version }} is installed for user '{{ user.name }}':
   asdf.version_installed:
     - name: rust
-    - version: {{ version }}
+    - version: '{{ version }}'
     - user: {{ user.name }}
     - require:
       - asdf setup is completed

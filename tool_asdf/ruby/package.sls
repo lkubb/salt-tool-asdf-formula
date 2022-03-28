@@ -20,7 +20,7 @@ Ruby plugin is up to date for user '{{ user.name }}':
 Ruby {{ version }} is installed for user '{{ user.name }}':
   asdf.version_installed:
     - name: ruby
-    - version: {{ version }}
+    - version: '{{ version }}'
     - user: {{ user.name }}
     - require:
       - asdf setup is completed

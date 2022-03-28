@@ -22,7 +22,7 @@ Golang plugin is up to date for user '{{ user.name }}':
 Go {{ version }} is installed for user '{{ user.name }}':
   asdf.version_installed:
     - name: golang
-    - version: {{ version }}
+    - version: '{{ version }}'
     - user: {{ user.name }}
     - require:
       - asdf setup is completed

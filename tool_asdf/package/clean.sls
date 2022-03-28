@@ -11,6 +11,6 @@ include:
 
 asdf is removed:
   pkg.removed:
-    - name: {{ asdf.pkg.name }}
+    - name: {{ asdf.lookup.pkg.name }}
     - require:
       - sls: {{ sls_config_clean }}

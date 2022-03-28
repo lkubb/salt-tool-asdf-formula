@@ -22,7 +22,7 @@ NodeJS plugin is up to date for user '{{ user.name }}':
 NodeJS {{ version }} is installed for user '{{ user.name }}':
   asdf.version_installed:
     - name: nodejs
-    - version: {{ version }}
+    - version: '{{ version }}'
     - user: {{ user.name }}
     - require:
       - asdf setup is completed

@@ -11,7 +11,7 @@
 User '{{ user.name }}' system default {{ tool }} {{ version }} is installed:
   asdf.version_installed:
     - name: {{ tool }}
-    - version: {{ version }}
+    - version: '{{ version }}'
     - user: {{ user.name }}
     - require:
       - asdf setup is completed
@@ -19,7 +19,7 @@ User '{{ user.name }}' system default {{ tool }} {{ version }} is installed:
 User '{{ user.name }}' uses {{ tool }} {{ version }} by default:
   asdf.version_set:
     - name: {{ tool }}
-    - version: {{ version }}
+    - version: '{{ version }}'
     - user: {{ user.name }}
     - require:
       - User '{{ user.name }}' system default {{ tool }} {{ version }} is installed

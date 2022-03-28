@@ -22,7 +22,7 @@ PHP plugin is up to date for user '{{ user.name }}':
 PHP {{ version }} is installed for user '{{ user.name }}':
   asdf.version_installed:
     - name: php
-    - version: {{ version }}
+    - version: '{{ version }}'
     - user: {{ user.name }}
     - require:
       - asdf setup is completed
