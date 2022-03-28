@@ -1,0 +1,45 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+#
+# Set default values.
+---
+values:
+  lookup:
+    available_tools:
+      - golang
+      - nodejs
+      - php
+      - python
+      - ruby
+      - rust
+    pkg:
+      name: asdf
+    rootgroup: root
+    config:
+      default_confdir: ''
+      default_conffile: '.asdfrc'
+      default_xdg_conffile: 'asdfrc'
+    golang_config:
+      default_confdir: ''
+      default_conffile: '.default-golang-packages'
+      default_xdg_conffile: 'default-golang-packages'
+    nodejs_config:
+      default_confdir: ''
+      default_conffile: '.default-npm-packages'
+      default_xdg_conffile: 'default-npm-packages'
+    python_config:
+      default_confdir: ''
+      default_conffile: '.default-python-packages'
+      default_xdg_conffile: 'default-python-packages'
+    ruby_config:
+      default_confdir: ''
+      default_conffile: '.default-gems'
+      default_xdg_conffile: 'default-gems'
+    rust_config:
+      default_confdir: ''
+      default_conffile: '.default-cargo-crates'
+      default_xdg_conffile: 'default-cargo-crates'
+  # Just here for testing
+  added_in_defaults: defaults_value
+  winner: defaults
+...

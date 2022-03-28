@@ -1,0 +1,25 @@
+{#- -*- coding: utf-8 -*- #}
+{#- vim: ft=jinja #}
+
+{#- Get the `tplroot` from `tpldir` #}
+{%- set tplroot = tpldir.split('/')[0] %}
+{%- from tplroot ~ "/map.jinja" import mapdata as asdf with context %}
+
+{%- set users = asdf.users | selectattr('asdf.ruby', 'defined') | list -%} {# casting to list ensures it can be imported #}
+
+{# see https://github.com/rbenv/ruby-build/wiki#suggested-build-environment #}
+{%- set dependencies = salt['grains.filter_by']({
+    'Arch': ['base-devel', 'libffi', 'libyaml', 'openssl', 'zlib'],
+    'Debian': [
+      'autoconf', 'bison', 'build-essential', 'libssl-dev',
+      'libyaml-dev', 'libreadline6-dev', 'zlib1g-dev', 'libncurses5-dev',
+      'libffi-dev', 'libgdbm6', 'libgdbm-dev', 'libdb-dev'],
+    'MacOS': ['openssl', 'readline'],
+    'RedHat': [
+      'gcc', 'make', 'bzip2', 'openssl-devel', 'libyaml-devel',
+      'libffi-devel', 'readline-devel', 'zlib-devel', 'gdbm-devel',
+      'ncurses-devel'],
+    'Suse': [
+      'gcc', 'bzip2', 'libopenssl-devel', 'libyaml-devel', 'libffi-devel',
+      'readline-devel', 'zlib-devel', 'gdbm-devel', 'ncurses-devel'],
+  }, 'os_family') -%}

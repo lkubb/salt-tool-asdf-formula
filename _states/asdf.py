@@ -40,13 +40,15 @@ def plugin_installed(name, user=None):
     try:
         if __salt__["asdf.is_plugin_installed"](name, user):
             ret["comment"] = "Plugin is already installed."
-        elif __opts__['test']:
-            ret['result'] = None
-            ret['comment'] = "Plugin {} would have been installed for user '{}'.".format(name, user)
-            ret["changes"] = {'installed': name}
+        elif __opts__["test"]:
+            ret["result"] = None
+            ret[
+                "comment"
+            ] = "Plugin {} would have been installed for user '{}'.".format(name, user)
+            ret["changes"] = {"installed": name}
         elif __salt__["asdf.install_plugin"](name, user):
             ret["comment"] = "Plugin {} was installed for user '{}'.".format(name, user)
-            ret["changes"] = {'installed': name}
+            ret["changes"] = {"installed": name}
         else:
             ret["result"] = False
             ret["comment"] = "Something went wrong while calling asdf."
@@ -74,17 +76,19 @@ def plugin_latest(name, user=None):
         The username to update the plugin for. Defaults to salt user.
 
     """
-    ret = {"name": name or 'all', "result": True, "comment": "", "changes": {}}
+    ret = {"name": name or "all", "result": True, "comment": "", "changes": {}}
 
     try:
-        if name is None or name == 'all':
+        if name is None or name == "all":
             if __opts__["test"]:
                 ret["result"] = None
-                ret["comment"] = "All plugins would have been updated for user '{}'.".format(user)
-                ret["changes"] = {'updated': 'all'}
+                ret[
+                    "comment"
+                ] = "All plugins would have been updated for user '{}'.".format(user)
+                ret["changes"] = {"updated": "all"}
             elif __salt__["asdf.update_plugins"](None, user):
                 ret["comment"] = "All plugins were updated for user '{}'.".format(user)
-                ret["changes"] = {'updated': 'all'}
+                ret["changes"] = {"updated": "all"}
             else:
                 ret["result"] = False
                 ret["comment"] = "Something went wrong while calling asdf."
@@ -92,13 +96,15 @@ def plugin_latest(name, user=None):
 
         if __salt__["asdf.is_plugin_installed"](name, user):
             ret["comment"] = "Plugin is already installed."
-        elif __opts__['test']:
-            ret['result'] = None
-            ret['comment'] = "Plugin {} would have been installed for user '{}'.".format(name, user)
-            ret["changes"] = {'installed': name}
+        elif __opts__["test"]:
+            ret["result"] = None
+            ret[
+                "comment"
+            ] = "Plugin {} would have been installed for user '{}'.".format(name, user)
+            ret["changes"] = {"installed": name}
         elif __salt__["asdf.install_plugin"](name, user):
             ret["comment"] = "Plugin {} was installed for user '{}'.".format(name, user)
-            ret["changes"] = {'installed': name}
+            ret["changes"] = {"installed": name}
         else:
             ret["result"] = False
             ret["comment"] = "Something went wrong while calling asdf."
@@ -131,13 +137,15 @@ def plugin_absent(name, user=None):
     try:
         if not __salt__["asdf.is_plugin_installed"](name, user):
             ret["comment"] = "Plugin is already removed."
-        elif __opts__['test']:
-            ret['result'] = None
-            ret['comment'] = "Plugin {} would have been removed for user '{}'.".format(name, user)
-            ret["changes"] = {'removed': name}
+        elif __opts__["test"]:
+            ret["result"] = None
+            ret["comment"] = "Plugin {} would have been removed for user '{}'.".format(
+                name, user
+            )
+            ret["changes"] = {"removed": name}
         elif __salt__["asdf.remove_plugin"](name, user):
             ret["comment"] = "Plugin {} was removed for user '{}'.".format(name, user)
-            ret["changes"] = {'removed': name}
+            ret["changes"] = {"removed": name}
         else:
             ret["result"] = False
             ret["comment"] = "Something went wrong while calling asdf."
@@ -173,7 +181,9 @@ def version_installed(name, version, user=None):
 
     try:
         if __salt__["asdf.is_version_installed"](name, version, user):
-            ret["comment"] = "Requested {} version {} is already installed.".format(name, version)
+            ret["comment"] = "Requested {} version {} is already installed.".format(
+                name, version
+            )
             ret["changes"] = {}
             return ret
         if not __salt__["asdf.is_plugin_installed"](name, user):
@@ -181,16 +191,24 @@ def version_installed(name, version, user=None):
                 ret["result"] = None
             elif not __salt__["asdf.install_plugin"]:
                 ret["result"] = False
-                ret["comment"] = "Requested plugin is not installed and could not be installed automatically."
+                ret[
+                    "comment"
+                ] = "Requested plugin is not installed and could not be installed automatically."
                 ret["changes"] = {}
                 return ret
             ret["changes"]["installed"].append("plugin '{}'.".format(name))
         if __opts__["test"]:
             ret["result"] = None
-            ret["comment"] = "{} version {} would have been installed for user '{}'.".format(name, version, user)
+            ret[
+                "comment"
+            ] = "{} version {} would have been installed for user '{}'.".format(
+                name, version, user
+            )
             ret["changes"]["installed"].append("{} version {}".format(name, version))
         elif __salt__["asdf.install_version"](name, version, user):
-            ret["comment"] = "{} version {} was installed for user '{}'.".format(name, version, user)
+            ret["comment"] = "{} version {} was installed for user '{}'.".format(
+                name, version, user
+            )
             ret["changes"]["installed"].append("{} version {}".format(name, version))
         else:
             ret["result"] = False
@@ -231,10 +249,16 @@ def version_absent(name, version, user=None):
             ret["comment"] = "{} version {} is already absent.".format(name, version)
         elif __opts__["test"]:
             ret["result"] = None
-            ret["comment"] = "{} version {} would have been removed for user '{}'.".format(name, version, user)
+            ret[
+                "comment"
+            ] = "{} version {} would have been removed for user '{}'.".format(
+                name, version, user
+            )
             ret["changes"] = {"removed": "{} version {}".format(name, version)}
         elif __salt__["asdf.remove_version"](name, version, user):
-            ret["comment"] = "{} version {} was removed for user '{}'.".format(name, version, user)
+            ret["comment"] = "{} version {} was removed for user '{}'.".format(
+                name, version, user
+            )
             ret["changes"] = {"removed": "{} version {}".format(name, version)}
         else:
             ret["result"] = False
@@ -246,7 +270,7 @@ def version_absent(name, version, user=None):
     return ret
 
 
-def version_set(name, version, user=None, cwd=''):
+def version_set(name, version, user=None, cwd=""):
     """
     Make sure a specific tool version is set as default. If cwd is specified,
     it will be the default local to the path. If it is empty, the tool version
@@ -280,21 +304,29 @@ def version_set(name, version, user=None, cwd=''):
             ret["comment"] = "Requested tool version is not installed."
             return ret
 
-        current = __salt__['asdf.get_current'](name, cwd, user)
-        if 'latest' == version:
-            version = __salt__['asdf.get_latest'](name, user)
+        current = __salt__["asdf.get_current"](name, cwd, user)
+        if "latest" == version:
+            version = __salt__["asdf.get_latest"](name, user)
         if current == version:
             ret["comment"] = "{} version {} is already used".format(name, version)
             ret["comment"] += " globally." if not cwd else " in path '{}'.".format(cwd)
         elif __opts__["test"]:
             ret["result"] = None
-            ret["comment"] = "{} version {} would have been set for user '{}'".format(name, version, user)
+            ret["comment"] = "{} version {} would have been set for user '{}'".format(
+                name, version, user
+            )
             ret["comment"] += " globally." if not cwd else " in path '{}'.".format(cwd)
-            ret["changes"]["system default"] = "Default {} {} version {}".format(name, 'local' if cwd else 'global', version)
+            ret["changes"]["system default"] = "Default {} {} version {}".format(
+                name, "local" if cwd else "global", version
+            )
         elif __salt__["asdf.set_version"](name, version, user, cwd):
-            ret["comment"] = "{} version {} was set for user '{}'".format(name, version, user)
+            ret["comment"] = "{} version {} was set for user '{}'".format(
+                name, version, user
+            )
             ret["comment"] += " globally." if not cwd else " in path '{}'.".format(cwd)
-            ret["changes"]["system default"] = "Default {} {} version {}".format(name, 'local' if cwd else 'global', version)
+            ret["changes"]["system default"] = "Default {} {} version {}".format(
+                name, "local" if cwd else "global", version
+            )
         else:
             ret["result"] = False
             ret["comment"] = "Something went wrong while calling asdf."
