@@ -5,8 +5,9 @@
 {%- set tplroot = tpldir.split('/')[0] %}
 {%- from tplroot ~ "/map.jinja" import mapdata as asdf with context %}
 
+
 {%- for user in asdf.users | selectattr('asdf.system', 'defined') %}
-  {%- for tool, version in user.asdf.system.items() %}
+{%-   for tool, version in user.asdf.system.items() %}
 
 User '{{ user.name }}' system default {{ tool }} {{ version }} is installed:
   asdf.version_installed:
@@ -23,5 +24,5 @@ User '{{ user.name }}' uses {{ tool }} {{ version }} by default:
     - user: {{ user.name }}
     - require:
       - User '{{ user.name }}' system default {{ tool }} {{ version }} is installed
-  {%- endfor %}
+{%-   endfor %}
 {%- endfor %}

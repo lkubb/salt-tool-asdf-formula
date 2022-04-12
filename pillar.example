@@ -16,8 +16,8 @@
 
 # Apart from the various source files, there are two independent source trees
 # for user-specific configuration.
-# Generally tool_{{ cookiecutter.abbr_pysafe }} > tool_users.
-# `tool_users` focuses on specific users, of which most values
+# Generally tool_asdf > tool_global.
+# `tool_global` focuses on specific users, of which most values
 # will be respected by all formulae in the `tool` suite:
 tool_global:
   users:
@@ -28,20 +28,19 @@ tool_global:
         # Force the usage of XDG directories for this user.
       xdg: true
 
+        # Put shell completions into this directory, relative to user home.
+      completions: '.config/zsh/completions'
+
         # Sync this user's config from a dotfiles repo.
         # The available paths and their priority can be found in the
-        # rendered `configsync.sls` file (currently, @TODO docs).
+        # rendered `config/sync.sls` file (currently, @TODO docs).
         # Overview in descending priority:
-        # salt://dotconfig/id/<minion_id>/user/<user>/asdf
-        # salt://dotconfig/os/Fedora/user/<user>/asdf
-        # salt://dotconfig/os_family/Debian/user/<user>/asdf
-        # salt://dotconfig/default/user/<user>/asdf
-        # salt://dotconfig/id/<minion_id>/asdf
-        # salt://dotconfig/os/Fedora/asdf
-        # salt://dotconfig/os_family/Debian/asdf
+        # salt://dotconfig/<minion_id>/<user>/asdf
+        # salt://dotconfig/<minion_id>/asdf
+        # salt://dotconfig/<os_family>/<user>/asdf
+        # salt://dotconfig/<os_family>/asdf
+        # salt://dotconfig/default/<user>/asdf
         # salt://dotconfig/default/asdf
-        # This means once any source for a specific user was found, it will
-        # override even minion-specific non-user-specific sources.
       dotconfig:              # can be bool or mapping
         file_mode: '0600'     # default: keep destination or salt umask (new)
         dir_mode: '0700'      # default: 0700
@@ -59,37 +58,42 @@ tool_global:
         # user-specific configuration in `tool_asdf:users`.
         # Set this to `false` to disable configuration for this user.
       asdf:
-          # keep plugins updated to latest version on subsequent runs
-        update_auto: true
-          # plugin: version to install. can be True (for latest), list or string
+          # plugin: version to install. Can be True (for latest), list or string.
+        direnv: 2.30.3
+        golang: latest
+          # If direnv is installed, make sure envrc files can use asdf.
+        integrate_direnv: true
+        nodejs: 17.8.0
+        php: 8.1.4
         python: 3.10.3
         ruby: 3.1.0
-          # if direnv is installed, make sure envrc files can use asdf
-        integrate-direnv: true
-          # user-specific defaults of global tool version
+        rust: latest
+          # User-specific defaults of global tool versions.
         system:
-          python: latest
+          python: 3.10.3
+          # Keep plugins updated to latest version on subsequent runs.
+        update_auto: true
 
 tool_asdf:
 
     # Specify an explicit version (works on most Linux distributions) or
-    # keep asdf updated to the latest version on subsequent runs
+    # keep the packages updated to their latest version on subsequent runs
     # by leaving version empty or setting it to 'latest'
     # (again for Linux, brew does that anyways).
   version: latest
 
     # Default formula configuration for all users.
   defaults:
-    python: 3.10.1
+    update_auto: default value for all users
 
     # User configuration can also be specified here in
     # `tool_asdf:users`. It will override
-    # configuration sourced from `tool_users`.
+    # configuration sourced from `tool_global:users`.
   users:
     user:
       persistenv: '.bash_profile'
       asdf:
-        python: 3.10.3
+        update_auto: this overrides config from tool_globl:users
 
 ######################################################################
 # The following settings define default values for this formula,
@@ -100,17 +104,47 @@ tool_asdf:
   lookup:
     pkg:
       name: asdf
-      enable_repo:
-        - stable
     rootgroup: root
-    config:
-      default_confdir: ''
-      default_conffile: '.asdfrc'
-      default_xdg_conffile: 'asdfrc'
-    golang:
-      default_confdir: ''
-      default_conffile: '.default-golang-packages'
-      default_xdg_conffile: 'default-golang-packages'
+    paths:
+      confdir: ''
+      conffile: '.asdfrc'
+      # @TODO Linux setup
+      install_path: '.local/bin'
+      xdg_dirname: 'asdf'
+      xdg_conffile: 'asdfrc'
+    available_tools:
+      - golang
+      - nodejs
+      - php
+      - python
+      - ruby
+      - rust
+    direnv_paths:
+      confdir: .config/direnv
+      conffile: direnvrc
+      xdg_conffile: direnvrc
+      xdg_dirname: direnv
+    golang_paths:
+      confdir: ''
+      conffile: .default-golang-packages
+      xdg_conffile: default-golang-packages
+    nodejs_paths:
+      confdir: ''
+      conffile: .default-npm-packages
+      xdg_conffile: default-npm-packages
+    python_paths:
+      confdir: ''
+      conffile: .default-python-packages
+      xdg_conffile: default-python-packages
+    ruby_paths:
+      confdir: ''
+      conffile: .default-gems
+      xdg_conffile: default-gems
+    rust_paths:
+      confdir: ''
+      conffile: .default-cargo-crates
+      # rust plugin only allows to set basedir and always appends .default-cargo-crates
+      xdg_conffile: .default-cargo-crates
 
 ######################################################################
 # This is where `tool` suite settings end and Salt behavior settings
@@ -131,18 +165,3 @@ tool_asdf:
       - osfinger
       - os
       - os_family
-
-    # All aspects of path/file resolution are customisable using the options below.
-    # This is unnecessary in most cases; there are sensible defaults.
-    # Default path: salt://< path_prefix >/< dirs.files >/< dirs.default >
-    # I.e.: salt://tool_asdf/files/default
-    # path_prefix: template_alt
-    # dirs:
-    #   files: files_alt
-    #   default: default_alt
-    # The entries under `source_files` are prepended to the default source files
-    # given for the state
-    source_files:
-      asdf config file is managed for user 'user':
-        - 'example_alt.tmpl'
-        - 'example_alt.tmpl.jinja'

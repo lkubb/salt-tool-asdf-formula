@@ -8,6 +8,7 @@ include:
   - {{ tplroot }}.package
   - .deps
 
+
 {%- for user in users %}
 
 Python plugin is up to date for user '{{ user.name }}':
@@ -15,7 +16,7 @@ Python plugin is up to date for user '{{ user.name }}':
     - name: python
     - user: {{ user.name }}
 
-  {%- for version in user.asdf.python %}
+{%-   for version in user.asdf.python %}
 
 Python {{ version }} is installed for user '{{ user.name }}':
   asdf.version_installed:
@@ -25,5 +26,5 @@ Python {{ version }} is installed for user '{{ user.name }}':
     - require:
       - asdf setup is completed
       - Required packages for compiling Python are available
-  {%- endfor %}
+{%-   endfor %}
 {%- endfor %}

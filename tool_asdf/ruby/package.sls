@@ -8,6 +8,7 @@ include:
   - {{ tplroot }}.package
   - .deps
 
+
 {%- for user in users %}
 
 Ruby plugin is up to date for user '{{ user.name }}':
@@ -15,7 +16,7 @@ Ruby plugin is up to date for user '{{ user.name }}':
     - name: ruby
     - user: {{ user.name }}
 
-  {%- for version in user.asdf.ruby %}
+{%-   for version in user.asdf.ruby %}
 
 Ruby {{ version }} is installed for user '{{ user.name }}':
   asdf.version_installed:
@@ -25,5 +26,5 @@ Ruby {{ version }} is installed for user '{{ user.name }}':
     - require:
       - asdf setup is completed
       - Required packages for compiling Ruby are available
-  {%- endfor %}
+{%-   endfor %}
 {%- endfor %}

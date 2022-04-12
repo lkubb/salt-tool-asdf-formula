@@ -7,33 +7,33 @@
 include:
   - .package
 
-{%- for user in users %}
+
+{%- for user in users | rejectattr('xdg', 'sameas', false) %}
+
 asdf ruby plugin global configuration is migrated to XDG_CONFIG_HOME for user '{{ user.name }}':
   file.rename:
-    - name: {{ user.xdg.config }}/asdf/default-gems
-    - source: {{ user.home }}/.default-gems
+    - name: {{ user.xdg.config | path_join(asdf.lookup.paths.xdg_dirname, asdf.lookup.ruby_paths.xdg_conffile) }}
+    - source: {{ user.home | path_join(asdf.lookup.ruby_paths.confdir, asdf.lookup.ruby_paths.conffile) }}
     - makedirs: true
-    - onlyif:
-      - test -e {{ user.home }}/.default-gems
     - require_in:
-  {%- for version in user.asdf.ruby %}
+{%-   for version in user.asdf.ruby %}
       - Ruby {{ version }} is installed for user '{{ user.name }}'
-  {%- endfor %}
+{%-   endfor %}
 
 asdf python uses XDG dirs during this salt run:
   environ.setenv:
     - value:
-        ASDF_GEM_DEFAULT_PACKAGES_FILE: "{{ user.xdg.config }}/asdf/default-gems"
+        ASDF_GEM_DEFAULT_PACKAGES_FILE: "{{ user.xdg.config | path_join(asdf.lookup.paths.xdg_dirname, asdf.lookup.ruby_paths.xdg_conffile) }}"
     - require_in:
-  {%- for version in user.asdf.ruby %}
+{%-   for version in user.asdf.ruby %}
       - Ruby {{ version }} is installed for user '{{ user.name }}'
-  {%- endfor %}
+{%-   endfor %}
 
-  {%- if user.get('persistenv') %}
+{%-   if user.get('persistenv') %}
 
 persistenv file for asdf ruby for user '{{ user.name }}' exists:
   file.managed:
-    - name: {{ user.home }}/{{ user.persistenv }}
+    - name: {{ user.home | path_join(user.persistenv) }}
     - user: {{ user.name }}
     - group: {{ user.group }}
     - replace: false
@@ -43,13 +43,14 @@ persistenv file for asdf ruby for user '{{ user.name }}' exists:
 
 asdf python plugin knows about XDG location for user '{{ user.name }}':
   file.append:
-    - name: {{ user.home }}/{{ user.persistenv }}
-    - text: export ASDF_GEM_DEFAULT_PACKAGES_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/asdf/default-gems"
+    - name: {{ user.home | path_join(user.persistenv) }}
+    - text: export ASDF_GEM_DEFAULT_PACKAGES_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/{{ asdf.lookup.paths.xdg_dirname |
+              path_join(asdf.lookup.ruby_paths.xdg_conffile) ~ '"' }}
     - require:
       - persistenv file for asdf ruby for user '{{ user.name }}' exists
     - require_in:
-    {%- for version in user.asdf.ruby %}
+{%-     for version in user.asdf.ruby %}
       - Ruby {{ version }} is installed for user '{{ user.name }}'
-    {%- endfor %}
-  {%- endif %}
+{%-     endfor %}
+{%-   endif %}
 {%- endfor %}

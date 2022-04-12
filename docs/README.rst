@@ -37,20 +37,19 @@ The following shows an example of ``tool_asdf`` per-user configuration. If provi
       # Force the usage of XDG directories for this user.
     xdg: true
 
+      # Put shell completions into this directory, relative to user home.
+    completions: '.config/zsh/completions'
+
       # Sync this user's config from a dotfiles repo.
       # The available paths and their priority can be found in the
-      # rendered `configsync.sls` file (currently, @TODO docs).
+      # rendered `config/sync.sls` file (currently, @TODO docs).
       # Overview in descending priority:
-      # salt://dotconfig/id/<minion_id>/user/<user>/asdf
-      # salt://dotconfig/os/Fedora/user/<user>/asdf
-      # salt://dotconfig/os_family/Debian/user/<user>/asdf
-      # salt://dotconfig/default/user/<user>/asdf
-      # salt://dotconfig/id/<minion_id>/asdf
-      # salt://dotconfig/os/Fedora/asdf
-      # salt://dotconfig/os_family/Debian/asdf
+      # salt://dotconfig/<minion_id>/<user>/asdf
+      # salt://dotconfig/<minion_id>/asdf
+      # salt://dotconfig/<os_family>/<user>/asdf
+      # salt://dotconfig/<os_family>/asdf
+      # salt://dotconfig/default/<user>/asdf
       # salt://dotconfig/default/asdf
-      # This means once any source for a specific user was found, it will
-      # override even minion-specific non-user-specific sources.
     dotconfig:              # can be bool or mapping
       file_mode: '0600'     # default: keep destination or salt umask (new)
       dir_mode: '0700'      # default: 0700
@@ -68,16 +67,21 @@ The following shows an example of ``tool_asdf`` per-user configuration. If provi
       # user-specific configuration in `tool_asdf:users`.
       # Set this to `false` to disable configuration for this user.
     asdf:
-        # keep plugins updated to latest version on subsequent runs
-      update_auto: true
-        # plugin: version to install. can be True (for latest), list or string
+        # plugin: version to install. Can be True (for latest), list or string.
+      direnv: 2.30.3
+      golang: latest
+        # If direnv is installed, make sure envrc files can use asdf.
+      integrate_direnv: true
+      nodejs: 17.8.0
+      php: 8.1.4
       python: 3.10.3
       ruby: 3.1.0
-        # if direnv is installed, make sure envrc files can use asdf
-      integrate-direnv: true
-        # user-specific defaults of global tool version
+      rust: latest
+        # User-specific defaults of global tool versions.
       system:
-        python: latest
+        python: 3.10.3
+        # Keep plugins updated to latest version on subsequent runs.
+      update_auto: true
 
 Formula-specific
 ^^^^^^^^^^^^^^^^
@@ -94,7 +98,7 @@ Formula-specific
 
       # Default formula configuration for all users.
     defaults:
-      python: 3.10.1
+      update_auto: default value for all users
 
 
 Global files
@@ -103,21 +107,18 @@ Some tools need global configuration files. A default one is provided with the f
 
 Dotfiles
 ~~~~~~~~
-`tool_asdf.configsync` will recursively apply templates from
+``tool_asdf.config.sync`` will recursively apply templates from
 
-* ``salt://dotconfig/id/<minion_id>/user/<user>/asdf``
-* ``salt://dotconfig/os/Fedora/user/<user>/asdf``
-* ``salt://dotconfig/os_family/Debian/user/<user>/asdf``
-* ``salt://dotconfig/default/user/<user>/asdf``
-* ``salt://dotconfig/id/<minion_id>/asdf``
-* ``salt://dotconfig/os/Fedora/asdf``
-* ``salt://dotconfig/os_family/Debian/asdf``
+* ``salt://dotconfig/<minion_id>/<user>/asdf``
+* ``salt://dotconfig/<minion_id>/asdf``
+* ``salt://dotconfig/<os_family>/<user>/asdf``
+* ``salt://dotconfig/<os_family>/asdf``
+* ``salt://dotconfig/default/<user>/asdf``
 * ``salt://dotconfig/default/asdf``
 
 to the user's config dir for every user that has it enabled (see ``user.dotconfig``). The target folder will not be cleaned by default (ie files in the target that are absent from the user's dotconfig will stay).
 
-The URL list above is in descending priority. This means once any source for a specific user was found, it will currently override even minion-specific non-user-specific sources.
-
+The URL list above is in descending priority. This means user-specific configuration from wider scopes will be overridden by more system-specific general configuration.
 
 Development
 -----------

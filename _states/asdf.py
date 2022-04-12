@@ -1,7 +1,8 @@
 """
-Managing asdf plugins and their versions
-======================================================
+``asdf`` Salt State Module
+==========================
 
+Manage asdf plugins and tool versions.
 """
 
 # import logging
@@ -21,12 +22,6 @@ def __virtual__():
 def plugin_installed(name, user=None):
     """
     Make sure asdf plugin is installed.
-
-    CLI Example:
-
-    .. code-block:: bash
-
-        salt '*' asdf.plugin_installed python
 
     name
         The name of the plugin to install, if not installed already.
@@ -62,12 +57,6 @@ def plugin_installed(name, user=None):
 def plugin_latest(name, user=None):
     """
     Make sure asdf plugins are up to date.
-
-    CLI Example:
-
-    .. code-block:: bash
-
-        salt '*' asdf.plugin_latest python
 
     name
         The name of the plugin to update. Use 'all' to update all plugins.
@@ -119,12 +108,6 @@ def plugin_absent(name, user=None):
     """
     Make sure asdf plugin is removed.
 
-    CLI Example:
-
-    .. code-block:: bash
-
-        salt '*' asdf.plugin_absent python
-
     name
         The name of the plugin to remove, if installed.
 
@@ -158,8 +141,8 @@ def plugin_absent(name, user=None):
 
 def version_installed(name, version, user=None):
     """
-    Make sure a specific tool version is installed. Installs the plugin, if not
-    already installed.
+    Make sure a specific tool version is installed. Installs the required
+    plugin as well, if it's not already installed.
 
     CLI Example:
 
@@ -168,13 +151,13 @@ def version_installed(name, version, user=None):
         salt '*' asdf.version_installed python latest
 
     name
-        The name of the plugin to install, if not installed already
+        The name of the plugin to install, if not installed already.
 
     version
-        The version to install, if not installed already
+        The version to install, if not installed already.
 
     user
-        The username to install the plugin for
+        The username to install the tool version for.
 
     """
     ret = {"name": name, "result": True, "comment": "", "changes": {"installed": []}}
@@ -219,6 +202,7 @@ def version_installed(name, version, user=None):
 
     if not ret["changes"]["installed"]:
         ret["changes"] = {}
+
     return ret
 
 
@@ -226,20 +210,14 @@ def version_absent(name, version, user=None):
     """
     Make sure a specific tool version is not installed.
 
-    CLI Example:
-
-    .. code-block:: bash
-
-        salt '*' asdf.version_absent python 3.10.1
-
     name
-        The name of the plugin
+        The name of the plugin for the tool.
 
     version
-        The tool version to remove, if not absent already
+        The tool version to remove, if not absent already.
 
     user
-        The username to remove the tool version for
+        The username to remove the tool version for.
 
     """
     ret = {"name": name, "result": True, "comment": "", "changes": {}}
@@ -270,17 +248,11 @@ def version_absent(name, version, user=None):
     return ret
 
 
-def version_set(name, version, user=None, cwd=""):
+def version_set(name, version, cwd="", user=None):
     """
     Make sure a specific tool version is set as default. If cwd is specified,
     it will be the default local to the path. If it is empty, the tool version
     will be set globally.
-
-    CLI Example:
-
-    .. code-block:: bash
-
-        salt '*' asdf.version_set python 3.10.1
 
     name
         The name of the tool
@@ -288,13 +260,12 @@ def version_set(name, version, user=None, cwd=""):
     version
         The tool version that is to be set as default
 
-    user
-        The username to set the tool version for
-
     cwd
-        If you want to set a version specific to a path, specify it here. If
-        empty, the version will be set globally.
+        If specified, set the local tool version for this specific directory.
+        Leave empty to set the global tool version.
 
+    user
+        The username to set the tool version for.
     """
     ret = {"name": name, "result": True, "comment": "", "changes": {}}
 

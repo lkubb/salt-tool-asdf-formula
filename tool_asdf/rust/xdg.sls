@@ -7,35 +7,34 @@
 include:
   - .package
 
-{%- for user in users | rejectattr('xdg', 'sameas', False) %}
+
+{%- for user in users | rejectattr('xdg', 'sameas', false) %}
+
 asdf Rust plugin global configuration is migrated to XDG_CONFIG_HOME for user '{{ user.name }}':
   file.rename:
-    - name: {{ users.xdg.config }}/asdf/.default-cargo-crates
-    - source: {{ user.home }}/.default-cargo-crates
+    - name: {{ users.xdg.config | path_join(asdf.lookup.paths.xdg_dirname, asdf.lookup.rust_paths.xdg_conffile) }}
+    - source: {{ user.home | path_join(asdf.lookup.rust_paths.confdir, asdf.lookup.rust_paths.conffile) }}
     - makedirs: true
-    - onlyif:
-      - test -e {{ user.home }}/.default-cargo-crates
     - require_in:
-  {%- for version in user.asdf.rust %}
+{%-   for version in user.asdf.rust %}
       - Rust {{ version }} is installed for user '{{ user.name }}'
-  {%- endfor %}
+{%-   endfor %}
 
 # rust plugin only allows to set basedir and always appends .default-cargo-crates
-
 asdf Rust uses XDG dirs during this salt run:
   environ.setenv:
     - value:
-        ASDF_CRATE_DEFAULT_PACKAGES_FILE: "{{ users.xdg.config }}/asdf"
+        ASDF_CRATE_DEFAULT_PACKAGES_FILE: "{{ users.xdg.config | path_join(asdf.lookup.paths.xdg_dirname) }}"
     - require_in:
-  {%- for version in user.asdf.rust %}
+{%-   for version in user.asdf.rust %}
       - Rust {{ version }} is installed for user '{{ user.name }}'
-  {%- endfor %}
+{%-   endfor %}
 
-  {%- if user.get('persistenv') %}
+{%-   if user.get('persistenv') %}
 
 persistenv file for asdf rust for user '{{ user.name }}' exists:
   file.managed:
-    - name: {{ user.home }}/{{ user.persistenv }}
+    - name: {{ user.home | path_join(user.persistenv) }}
     - user: {{ user.name }}
     - group: {{ user.group }}
     - replace: false
@@ -45,14 +44,14 @@ persistenv file for asdf rust for user '{{ user.name }}' exists:
 
 asdf Rust plugin knows about XDG location for user '{{ user.name }}':
   file.append:
-    - name: {{ user.home }}/{{ user.persistenv }}
+    - name: {{ user.home | path_join(user.persistenv) }}
     - text: |
-        export ASDF_PYTHON_DEFAULT_PACKAGES_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/asdf"
+        export ASDF_PYTHON_DEFAULT_PACKAGES_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/{{ asdf.lookup.paths.xdg_dirname }}"
     - require:
       - persistenv file for asdf rust for user '{{ user.name }}' exists
     - require_in:
-    {%- for version in user.asdf.rust %}
+{%-   for version in user.asdf.rust %}
       - Rust {{ version }} is installed for user '{{ user.name }}'
-    {%- endfor %}
-  {%- endif %}
+{%-   endfor %}
+{%-   endif %}
 {%- endfor %}

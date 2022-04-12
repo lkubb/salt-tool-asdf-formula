@@ -6,4 +6,3 @@
 .. automodule:: _states.asdf
    :members:
    :undoc-members:
-   :show-inheritance:

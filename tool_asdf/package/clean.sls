@@ -9,6 +9,7 @@
 include:
   - {{ sls_config_clean }}
 
+
 asdf is removed:
   pkg.removed:
     - name: {{ asdf.lookup.pkg.name }}

@@ -7,33 +7,33 @@
 include:
   - .package
 
-{%- for user in users | rejectattr('xdg', 'sameas', False) %}
+
+{%- for user in users | rejectattr('xdg', 'sameas', false) %}
+
 asdf python plugin global configuration is migrated to XDG_CONFIG_HOME for user '{{ user.name }}':
   file.rename:
-    - name: {{ user.xdg.config }}/asdf/default-python-packages
-    - source: {{ user.home }}/.default-python-packages
+    - name: {{ user.xdg.config | path_join(asdf.lookup.paths.xdg_dirname, asdf.lookup.python_paths.xdg_conffile) }}
+    - source: {{ user.home | path_join(asdf.lookup.python_paths.confdir, asdf.lookup.python_paths.conffile) }}
     - makedirs: true
-    - onlyif:
-      - test -e {{ user.home }}/.default-python-packages
     - require_in:
-  {%- for version in user.asdf.python %}
+{%-   for version in user.asdf.python %}
       - Python {{ version }} is installed for user '{{ user.name }}'
-  {%- endfor %}
+{%-   endfor %}
 
 asdf python uses XDG dirs during this salt run:
   environ.setenv:
     - value:
-        ASDF_PYTHON_DEFAULT_PACKAGES_FILE: "{{ user.xdg.config }}/asdf/default-python-packages"
+        ASDF_PYTHON_DEFAULT_PACKAGES_FILE: "{{ user.xdg.config | path_join(asdf.lookup.paths.xdg_dirname, asdf.lookup.python_paths.xdg_conffile) }}"
     - require_in:
-  {%- for version in user.asdf.python %}
+{%-   for version in user.asdf.python %}
       - Python {{ version }} is installed for user '{{ user.name }}'
-  {%- endfor %}
+{%-   endfor %}
 
-  {%- if user.get('persistenv') %}
+{%-   if user.get('persistenv') %}
 
 persistenv file for asdf python for user '{{ user.name }}' exists:
   file.managed:
-    - name: {{ user.home }}/{{ user.persistenv }}
+    - name: {{ user.home | path_join(user.persistenv) }}
     - user: {{ user.name }}
     - group: {{ user.group }}
     - replace: false
@@ -43,13 +43,14 @@ persistenv file for asdf python for user '{{ user.name }}' exists:
 
 asdf python plugin knows about XDG location for user '{{ user.name }}':
   file.append:
-    - name: {{ user.home }}/{{ user.persistenv }}
-    - text: export ASDF_PYTHON_DEFAULT_PACKAGES_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/asdf/default-python-packages"
+    - name: {{ user.home | path_join(user.persistenv) }}
+    - text: export ASDF_PYTHON_DEFAULT_PACKAGES_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/{{ asdf.lookup.paths.xdg_dirname |
+              path_join(asdf.lookup.python_paths.xdg_conffile) ~ '"' }}
     - require:
       - persistenv file for asdf python for user '{{ user.name }}' exists
     - require_in:
-    {%- for version in user.asdf.python %}
+{%-     for version in user.asdf.python %}
       - Python {{ version }} is installed for user '{{ user.name }}'
-    {%- endfor %}
-  {%- endif %}
+{%-     endfor %}
+{%-   endif %}
 {%- endfor %}

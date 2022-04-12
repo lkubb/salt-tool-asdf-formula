@@ -1,6 +1,26 @@
 # -*- coding: utf-8 -*-
 # vim: ft=yaml
 ---
+tool_global:
+  users:
+    user:
+      completions: .completions
+      configsync: true
+      persistenv: .bash_profile
+      rchook: .bashrc
+      xdg: true
+      asdf:
+        direnv: 2.30.3
+        golang: latest
+        integrate_direnv: true
+        nodejs: 17.8.0
+        php: 8.1.4
+        python: 3.10.3
+        ruby: 3.1.0
+        rust: latest
+        system:
+          python: 3.10.3
+        update_auto: true
 tool_asdf:
   lookup:
     master: template-master
@@ -8,11 +28,45 @@ tool_asdf:
     winner: lookup
     added_in_lookup: lookup_value
 
-  pkg:
-    name: asdf
-  service:
-    name: asdf
-  config: /home/user/.config/asdf/config
+    pkg:
+      name: asdf
+    paths:
+      confdir: ''
+      conffile: '.asdfrc'
+      xdg_dirname: 'asdf'
+      xdg_conffile: 'asdfrc'
+    available_tools:
+      - golang
+      - nodejs
+      - php
+      - python
+      - ruby
+      - rust
+    direnv_paths:
+      confdir: .config/direnv
+      conffile: direnvrc
+      xdg_conffile: direnvrc
+      xdg_dirname: direnv
+    golang_paths:
+      confdir: ''
+      conffile: .default-golang-packages
+      xdg_conffile: default-golang-packages
+    nodejs_paths:
+      confdir: ''
+      conffile: .default-npm-packages
+      xdg_conffile: default-npm-packages
+    python_paths:
+      confdir: ''
+      conffile: .default-python-packages
+      xdg_conffile: default-python-packages
+    ruby_paths:
+      confdir: ''
+      conffile: .default-gems
+      xdg_conffile: default-gems
+    rust_paths:
+      confdir: ''
+      conffile: .default-cargo-crates
+      xdg_conffile: .default-cargo-crates
 
   tofs:
     # The files_switch key serves as a selector for alternative
@@ -41,13 +95,6 @@ tool_asdf:
     #   tool-asdf-config-file-file-managed:
     #     - 'example_alt.tmpl'
     #     - 'example_alt.tmpl.jinja'
-
-    # For testing purposes
-    source_files:
-      tool-asdf-config-file-file-managed:
-        - 'example.tmpl.jinja'
-      tool-asdf-subcomponent-config-file-file-managed:
-        - 'subcomponent-example.tmpl.jinja'
 
   # Just for testing purposes
   winner: pillar

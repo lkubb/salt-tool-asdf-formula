@@ -12,6 +12,7 @@
 # values: {}
 ---
 values:
-  pkg:
-    manager: chocolatey
+  lookup:
+    pkg:
+      manager: chocolatey
 ...

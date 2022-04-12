@@ -10,30 +10,27 @@ include:
   - {{ tplroot }}.package
 
 {%- for user in asdf.users | selectattr('dotconfig', 'defined') | selectattr('dotconfig') %}
-  {%- set dotconfig = user.dotconfig if dotconfig is mapping else {} %}
+{%-   set dotconfig = user.dotconfig if user.dotconfig is mapping else {} %}
 
 asdf configuration is synced for user '{{ user.name }}':
   file.recurse:
-    - name: {{ user._asdf.confdir }}
+    - name: {{ user['_asdf'].confdir }}
     - source: {{ files_switch(
-                [salt['file.join']('user', user.name, tplroot[5:])],
-                default_files_switch=['id', 'os', 'os_family'],
-                override_root='dotconfig') }}
-              {{ files_switch(
-                [tplroot[5:]],
-                default_files_switch=['id', 'os', 'os_family'],
-                override_root='dotconfig') }}
+                ['asdf'],
+                default_files_switch=['id', 'os_family'],
+                override_root='dotconfig',
+                opt_prefixes=[user.name]) }}
     - context:
         user: {{ user | json }}
     - template: jinja
     - user: {{ user.name }}
     - group: {{ user.group }}
-  {%- if dotconfig.get('file_mode') %}
+{%-   if dotconfig.get('file_mode') %}
     - file_mode: '{{ dotconfig.file_mode }}'
-  {%- endif %}
+{%-   endif %}
     - dir_mode: '{{ dotconfig.get('dir_mode', '0700') }}'
-    - clean: {{ dotconfig.get('clean', False) | to_bool }}
-    - makedirs: True
+    - clean: {{ dotconfig.get('clean', false) | to_bool }}
+    - makedirs: true
     - require_in:
       - asdf setup is completed
 {%- endfor %}

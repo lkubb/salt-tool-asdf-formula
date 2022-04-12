@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "salt_tool_asdf"
 version = "1.0.0"
-description = "Saltstackexecution/state modules andstates to manage asdf"
+description = "Saltstack execution/state modules and states to manage asdf"
 authors = ["lkubb"]
 
 [tool.poetry.dependencies]

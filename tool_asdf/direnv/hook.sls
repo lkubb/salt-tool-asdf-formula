@@ -8,11 +8,12 @@
 include:
   - {{ tplroot }}.direnv.package
 
+
 {%- for user in users | selectattr('rchook', 'defined') %}
 
 rchook for asdf direnv exists for user '{{ user.name }}':
   file.managed:
-    - name: {{ user.home }}/{{ user.rchook }}
+    - name: {{ user.home | path_join(user.rchook) }}
     - user: {{ user.name }}
     - group: {{ user.group }}
     - replace: false
@@ -22,7 +23,7 @@ rchook for asdf direnv exists for user '{{ user.name }}':
 
 direnv is hooked to shell for '{{ user.name }}':
   file.append:
-    - name: {{ user.home }}/{{ user.rchook }}
+    - name: {{ user.home | path_join(user.rchook) }}
     - source: {{ files_switch(
                 ['direnv/' ~ user.shell ~ '/hook'],
                 default_files_switch=['id', 'os', 'os_family']) }}

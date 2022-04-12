@@ -5,6 +5,17 @@
 ---
 values:
   lookup:
+    pkg:
+      name: asdf
+    paths:
+      confdir: ''
+      conffile: '.asdfrc'
+      datadir: .asdf
+      versionfile: '.tool-versions'
+      xdg_dirname: 'asdf'
+      xdg_conffile: 'asdfrc'
+      xdg_versionfile: 'tool-versions'
+    rootgroup: root
     available_tools:
       - golang
       - nodejs
@@ -12,33 +23,34 @@ values:
       - python
       - ruby
       - rust
-    pkg:
-      name: asdf
-    rootgroup: root
-    config:
-      default_confdir: ''
-      default_conffile: '.asdfrc'
-      default_xdg_conffile: 'asdfrc'
-    golang_config:
-      default_confdir: ''
-      default_conffile: '.default-golang-packages'
-      default_xdg_conffile: 'default-golang-packages'
-    nodejs_config:
-      default_confdir: ''
-      default_conffile: '.default-npm-packages'
-      default_xdg_conffile: 'default-npm-packages'
-    python_config:
-      default_confdir: ''
-      default_conffile: '.default-python-packages'
-      default_xdg_conffile: 'default-python-packages'
-    ruby_config:
-      default_confdir: ''
-      default_conffile: '.default-gems'
-      default_xdg_conffile: 'default-gems'
-    rust_config:
-      default_confdir: ''
-      default_conffile: '.default-cargo-crates'
-      default_xdg_conffile: 'default-cargo-crates'
+    direnv_paths:
+      confdir: .config/direnv
+      conffile: direnvrc
+      # @TODO Linux setup
+      install_dir: .local/bin
+      xdg_conffile: direnvrc
+      xdg_dirname: direnv
+    golang_paths:
+      confdir: ''
+      conffile: .default-golang-packages
+      xdg_conffile: default-golang-packages
+    nodejs_paths:
+      confdir: ''
+      conffile: .default-npm-packages
+      xdg_conffile: default-npm-packages
+    python_paths:
+      confdir: ''
+      conffile: .default-python-packages
+      xdg_conffile: default-python-packages
+    ruby_paths:
+      confdir: ''
+      conffile: .default-gems
+      xdg_conffile: default-gems
+    rust_paths:
+      confdir: ''
+      conffile: .default-cargo-crates
+      # rust plugin only allows to set basedir and always appends .default-cargo-crates
+      xdg_conffile: .default-cargo-crates
   # Just here for testing
   added_in_defaults: defaults_value
   winner: defaults

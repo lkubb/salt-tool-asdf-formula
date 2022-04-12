@@ -12,6 +12,6 @@ include:
 {%- if users | selectattr('rchook', 'defined') | list %}
   - .hook
 {%- endif %}
-{%- if users | selectattr('asdf.integrate-direnv', 'defined') | selectattr('asdf.integrate-direnv') | list %}
+{%- if users | selectattr('asdf.integrate_direnv', 'defined') | selectattr('asdf.integrate_direnv') | list %}
   - .integrate
 {%- endif %}

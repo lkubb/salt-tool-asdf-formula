@@ -7,8 +7,8 @@
 include:
   - {{ tplroot }}.package
 
-# Rust plugin uses rustup and does not compile from source, so no dependencies needed
 
+# Rust plugin uses rustup and does not compile from source, so no dependencies needed
 {%- for user in users %}
   {%- if user.asdf.get('update_auto') %}
 

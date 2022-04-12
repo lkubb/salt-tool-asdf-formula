@@ -7,17 +7,12 @@
 
 include:
   - .package
-{%- if asdf.users | rejectattr('xdg', 'sameas', False) | list %}
   - .xdg
-{%- endif %}
-{%- if asdf.users | selectattr('dotconfig', 'defined') | selectattr('dotconfig') | list %}
-  - .configsync
-{%- endif %}
+  - .config
+  - .completions
 {%- for tool in asdf.lookup.available_tools %}
-  {%- if asdf.users | selectattr('asdf.' ~ tool, 'defined') | list %}
+{%-   if asdf.users | selectattr('asdf.' ~ tool, 'defined') | list %}
   - .{{ tool }}
-  {%- endif %}
+{%-   endif %}
 {%- endfor %}
-{%- if asdf.users | selectattr('asdf.system', 'defined') | list %}
   - .system
-{%- endif %}

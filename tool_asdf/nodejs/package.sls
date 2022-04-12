@@ -8,16 +8,17 @@ include:
   - {{ tplroot }}.package
   - .deps
 
+
 {%- for user in users %}
-  {%- if user.asdf.get('update_auto') %}
+{%-   if user.asdf.get('update_auto') %}
 
 NodeJS plugin is up to date for user '{{ user.name }}':
   asdf.plugin_latest:
     - name: nodejs
     - user: {{ user.name }}
-  {%- endif %}
+{%-   endif %}
 
-  {%- for version in user.asdf.nodejs %}
+{%-   for version in user.asdf.nodejs %}
 
 NodeJS {{ version }} is installed for user '{{ user.name }}':
   asdf.version_installed:
@@ -27,5 +28,5 @@ NodeJS {{ version }} is installed for user '{{ user.name }}':
     - require:
       - asdf setup is completed
       - Required packages for compiling NodeJS are available
-  {%- endfor %}
+{%-   endfor %}
 {%- endfor %}

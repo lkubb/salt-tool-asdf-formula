@@ -2,4 +2,4 @@
 # vim: ft=sls
 
 include:
-  - .migrated
+  - .sync

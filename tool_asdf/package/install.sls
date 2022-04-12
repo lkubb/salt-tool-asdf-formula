@@ -5,6 +5,7 @@
 {%- set tplroot = tpldir.split('/')[0] %}
 {%- from tplroot ~ "/map.jinja" import mapdata as asdf with context %}
 
+
 asdf is installed:
   pkg.installed:
     - name: {{ asdf.lookup.pkg.name }}
