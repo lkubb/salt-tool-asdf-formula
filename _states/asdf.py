@@ -290,7 +290,7 @@ def version_set(name, version, cwd="", user=None):
             ret["changes"]["system default"] = "Default {} {} version {}".format(
                 name, "local" if cwd else "global", version
             )
-        elif __salt__["asdf.set_version"](name, version, user, cwd):
+        elif __salt__["asdf.set_version"](name, version, cwd, user):
             ret["comment"] = "{} version {} was set for user '{}'".format(
                 name, version, user
             )
