@@ -17,3 +17,14 @@ asdf setup is completed:
     - name: Hooray, asdf setup has finished.
     - require:
       - pkg: {{ asdf.lookup.pkg.name }}
+
+# might not be necessary
+{%- for user in asdf.users %}
+
+asdf is reshimmed on version change:
+  cmd.run:
+    - name: asdf reshim
+    - runas: {{ user }}
+    - onchanges:
+      - asdf is installed
+{%- endfor %}

@@ -82,6 +82,7 @@ asdf uses XDG dirs during this salt run:
         ASDF_DEFAULT_TOOL_VERSIONS_FILENAME: "{{ user_xdg_versionfile }}"
     - require_in:
       - asdf setup is completed
+      - asdf is reshimmed on xdg migration for user '{{ user.name }}'
 
 {%-   if user.get('persistenv') %}
 
@@ -107,5 +108,13 @@ asdf knows about XDG location for user '{{ user.name }}':
       - persistenv file for asdf exists for user '{{ user.name }}'
     - require_in:
       - asdf setup is completed
+      - asdf is reshimmed on xdg migration for user '{{ user.name }}'
 {%-   endif %}
+
+asdf is reshimmed on xdg migration for user '{{ user.name }}':
+  cmd.run:
+    - name: asdf reshim
+    - runas: {{ user.name }}
+    - onchanges:
+      - Existing asdf data is migrated for user '{{ user.name }}'
 {%- endfor %}
