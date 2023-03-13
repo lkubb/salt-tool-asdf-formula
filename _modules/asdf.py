@@ -411,12 +411,10 @@ def _list_installed(user=None):
     )
 
     parsed = {}
-    cur = ""
-    for s in installed.splitlines():
-        if "  " != s[:2]:
-            cur = s
-            continue
-        parsed[cur] = s[2:]
+    for tool, versions in re.findall(
+        r"^(\S+)\n((?:\s+\S+\n)+)", installed, re.MULTILINE
+    ):
+        parsed[tool] = [v.strip(" *") for v in versions.splitlines()]
     return parsed
 
 
@@ -513,7 +511,7 @@ def list_installed_versions(name, user=None):
     )
     if "No versions installed" in installed:
         return []
-    return installed.splitlines()
+    return [v.strip(" *") for v in installed.splitlines()]
 
 
 def get_current(name, cwd="", user=None):
