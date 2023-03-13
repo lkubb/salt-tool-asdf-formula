@@ -39,6 +39,16 @@ Existing asdf configuration is migrated for user '{{ user.name }}':
     - require_in:
       - asdf setup is completed
 
+# https://github.com/asdf-vm/asdf/issues/687
+Workaround asdf not allowing custom .tool-versions for user '{{ user.name }}':
+  file.symlink:
+    - name: {{ user_default_versions }}
+    - target: {{ user_xdg_versionfile }}
+    - require:
+      - Existing asdf configuration is migrated for user '{{ user.name }}'
+    - require_in:
+      - asdf setup is completed
+
 asdf has its config file in XDG_CONFIG_HOME for user '{{ user.name }}':
   file.managed:
     - name: {{ user_xdg_conffile }}
@@ -78,7 +88,7 @@ asdf uses XDG dirs during this salt run:
     - value:
         ASDF_CONFIG_FILE: "{{ user_xdg_conffile }}"
         ASDF_DATA_DIR: "{{ user_xdg_datadir }}"
-        ASDF_DEFAULT_TOOL_VERSIONS_FILENAME: "{{ user_xdg_versionfile }}"
+        # ASDF_DEFAULT_TOOL_VERSIONS_FILENAME: "{{ user_xdg_versionfile }}"
     - require_in:
       - asdf setup is completed
       - asdf is reshimmed on xdg migration for user '{{ user.name }}'
@@ -101,8 +111,10 @@ asdf knows about XDG location for user '{{ user.name }}':
     - text: |
         export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/{{ asdf.lookup.paths.xdg_dirname | path_join(asdf.lookup.paths.xdg_conffile) }}"
         export ASDF_DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/{{ asdf.lookup.paths.xdg_dirname }}"
-        export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME="${XDG_CONFIG_HOME:-$HOME/.config}/{{ asdf.lookup.paths.xdg_dirname |
-                path_join(asdf.lookup.paths.xdg_versionfile) }}"
+      # export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME="${XDG_CONFIG_HOME:-$HOME/.config}/{\{ asdf.lookup.paths.xdg_dirname |
+      #         path_join(asdf.lookup.paths.xdg_versionfile) }}"
+
+      # Does not work anymore: https://github.com/asdf-vm/asdf/issues/1248
     - require:
       - persistenv file for asdf exists for user '{{ user.name }}'
     - require_in:
