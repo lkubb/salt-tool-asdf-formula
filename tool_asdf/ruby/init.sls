@@ -2,7 +2,7 @@
 # vim: ft=sls
 
 {%- set tplroot = tpldir.split('/')[0] %}
-{%- from tplroot ~ "/map.jinja" import mapdata as asdf with context %}
+{%- from tplroot ~ "/python/map.jinja" import users %}
 
 include:
 {%- if users | rejectattr('xdg', 'sameas', False) | list %}
