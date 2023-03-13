@@ -35,6 +35,7 @@ tool_asdf:
       conffile: '.asdfrc'
       xdg_dirname: 'asdf'
       xdg_conffile: 'asdfrc'
+    rootgroup: root
     available_tools:
       - golang
       - nodejs
