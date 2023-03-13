@@ -273,6 +273,11 @@ def version_set(name, version, cwd="", user=None):
         if not __salt__["asdf.is_version_installed"](name, version, user):
             ret["result"] = False
             ret["comment"] = "Requested tool version is not installed."
+            if __opts__["test"]:
+                ret["result"] = None
+                ret[
+                    "comment"
+                ] += " If you installed the tool version in a previous state, everything will be fine."
             return ret
 
         current = __salt__["asdf.get_current"](name, cwd, user)
