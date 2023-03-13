@@ -16,7 +16,8 @@ asdf python plugin global configuration is migrated to XDG_CONFIG_HOME for user 
     - source: {{ user.home | path_join(asdf.lookup.python_paths.confdir, asdf.lookup.python_paths.conffile) }}
     - makedirs: true
     - require_in:
-{%-   for version in user.asdf.python %}
+      - asdf python setup is completed
+{%-   for version in user.asdf.get("python", []) %}
       - Python {{ version }} is installed for user '{{ user.name }}'
 {%-   endfor %}
 
@@ -25,7 +26,8 @@ asdf python uses XDG dirs during this salt run:
     - value:
         ASDF_PYTHON_DEFAULT_PACKAGES_FILE: "{{ user.xdg.config | path_join(asdf.lookup.paths.xdg_dirname, asdf.lookup.python_paths.xdg_conffile) }}"
     - require_in:
-{%-   for version in user.asdf.python %}
+      - asdf python setup is completed
+{%-   for version in user.asdf.get("python", []) %}
       - Python {{ version }} is installed for user '{{ user.name }}'
 {%-   endfor %}
 
@@ -49,7 +51,8 @@ asdf python plugin knows about XDG location for user '{{ user.name }}':
     - require:
       - persistenv file for asdf python for user '{{ user.name }}' exists
     - require_in:
-{%-     for version in user.asdf.python %}
+      - asdf python setup is completed
+{%-     for version in user.asdf.get("python", []) %}
       - Python {{ version }} is installed for user '{{ user.name }}'
 {%-     endfor %}
 {%-   endif %}

@@ -29,3 +29,6 @@ Rust {{ version }} is installed for user '{{ user.name }}':
       - asdf setup is completed
   {%- endfor %}
 {%- endfor %}
+
+asdf rust setup is completed:
+  test.nop

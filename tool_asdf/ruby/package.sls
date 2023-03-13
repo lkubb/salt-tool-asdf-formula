@@ -28,3 +28,8 @@ Ruby {{ version }} is installed for user '{{ user.name }}':
       - Required packages for compiling Ruby are available
 {%-   endfor %}
 {%- endfor %}
+
+asdf ruby setup is completed:
+  test.nop:
+    - require:
+      - Required packages for compiling Ruby are available

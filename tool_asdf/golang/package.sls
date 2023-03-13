@@ -30,3 +30,8 @@ Go {{ version }} is installed for user '{{ user.name }}':
       - Required packages for compiling Go are available
 {%-   endfor %}
 {%- endfor %}
+
+asdf golang setup is completed:
+  test.nop:
+    - require:
+      - Required packages for compiling Go are available

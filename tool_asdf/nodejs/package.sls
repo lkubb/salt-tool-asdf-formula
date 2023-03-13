@@ -30,3 +30,8 @@ NodeJS {{ version }} is installed for user '{{ user.name }}':
       - Required packages for compiling NodeJS are available
 {%-   endfor %}
 {%- endfor %}
+
+asdf nodejs setup is completed:
+  test.nop:
+    - require:
+      - Required packages for compiling NodeJS are available

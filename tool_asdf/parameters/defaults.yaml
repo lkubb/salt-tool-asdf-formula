@@ -17,6 +17,7 @@ values:
       xdg_versionfile: 'tool-versions'
     rootgroup: root
     available_tools:
+      - direnv
       - golang
       - nodejs
       - php

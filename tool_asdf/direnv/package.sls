@@ -26,3 +26,6 @@ direnv {{ version }} is installed for user '{{ user.name }}':
       - asdf setup is completed
 {%-   endfor %}
 {%- endfor %}
+
+asdf direnv setup is completed:
+  test.nop

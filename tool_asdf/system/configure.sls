@@ -23,7 +23,7 @@ User '{{ user.name }}' system default {{ tool }} {{ version }} is installed:
     - user: {{ user.name }}
     - require:
       - asdf setup is completed
-      - sls: {{ tplroot ~ "." ~ tool ~ ".package" }}
+      - asdf {{ tool }} setup is completed
 
 User '{{ user.name }}' uses {{ tool }} {{ version }} by default:
   asdf.version_set:

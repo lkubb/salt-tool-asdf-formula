@@ -16,7 +16,8 @@ asdf python plugin global configuration is migrated to XDG_CONFIG_HOME for user 
     - source: {{ user.home | path_join(asdf.lookup.golang_paths.confdir, asdf.lookup.golang_paths.conffile) }}
     - makedirs: true
     - require_in:
-{%-   for version in user.asdf.golang %}
+      - asdf golang setup is completed
+{%-   for version in user.asdf.get("golang", []) %}
       - Go {{ version }} is installed for user '{{ user.name }}'
 {%-   endfor %}
 
@@ -25,7 +26,8 @@ asdf golang uses XDG dirs during this salt run:
     - value:
         ASDF_GOLANG_DEFAULT_PACKAGES_FILE: "{{ user.xdg.config | path_join(asdf.lookup.paths.xdg_dirname, asdf.lookup.golang_paths.xdg_conffile) }}"
     - require_in:
-{%-   for version in user.asdf.golang %}
+      - asdf golang setup is completed
+{%-   for version in user.asdf.get("golang", []) %}
       - Go {{ version }} is installed for user '{{ user.name }}'
 {%-   endfor %}
 
@@ -49,7 +51,8 @@ asdf golang plugin knows about XDG location for user '{{ user.name }}':
     - require:
       - persistenv file for asdf golang for user '{{ user.name }}' exists
     - require_in:
-{%-     for version in user.asdf.golang %}
+      - asdf golang setup is completed
+{%-     for version in user.asdf.get("golang", []) %}
       - Go {{ version }} is installed for user '{{ user.name }}'
 {%-     endfor %}
 {%-   endif %}
