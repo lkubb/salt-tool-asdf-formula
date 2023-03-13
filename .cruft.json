@@ -41,10 +41,62 @@
       "has_completions": "y",
       "has_tests": "y",
       "git_username": "lkubb",
-      "lookup": {},
+      "lookup": {
+        "available_tools": [
+          "direnv",
+          "golang",
+          "nodejs",
+          "php",
+          "python",
+          "ruby",
+          "rust"
+        ],
+        "direnv_paths": {
+          "confdir": ".config/direnv",
+          "conffile": "direnvrc",
+          "xdg_dirname": "direnv",
+          "xdg_conffile": "direnvrc"
+        },
+        "golang_paths": {
+          "confdir": "",
+          "conffile": ".default-golang-packages",
+          "xdg_conffile": "default-golang-packages"
+        },
+        "nodejs_paths": {
+          "confdir": "",
+          "conffile": ".default-npm-packages",
+          "xdg_conffile": "default-npm-packages"
+        },
+        "python_paths": {
+          "confdir": "",
+          "conffile": ".default-python-packages",
+          "xdg_conffile": "default-python-packages"
+        },
+        "ruby_paths": {
+          "confdir": "",
+          "conffile": ".default-gems",
+          "xdg_conffile": "default-gems"
+        },
+        "rust_paths": {
+          "confdir": "",
+          "conffile": ".default-cargo-crates",
+          "xdg_conffile": ".default-cargo-crates"
+        }
+      },
       "settings": {},
       "usersettings": {
-        "someconf": "someval"
+        "update_auto": true,
+        "integrate_direnv": true,
+        "direnv": "2.30.3",
+        "golang": "latest",
+        "nodejs": "17.8.0",
+        "php": "8.1.4",
+        "python": "3.10.3",
+        "ruby": "3.1.0",
+        "rust": "latest",
+        "system": {
+          "python": "3.10.3"
+        }
       },
       "_template": "https://github.com/lkubb/salt-tool-template-formula"
     }

@@ -37,6 +37,7 @@ tool_asdf:
       xdg_conffile: 'asdfrc'
     rootgroup: root
     available_tools:
+      - direnv
       - golang
       - nodejs
       - php
