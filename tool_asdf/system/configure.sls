@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{%- set tplroot = tpldir.split('/')[0] %}
+{%- set tplroot = tpldir.split("/")[0] %}
 {%- set sls_deps = [] %}
 {%- from tplroot ~ "/map.jinja" import mapdata as asdf with context %}
 
@@ -13,7 +12,7 @@
 
 include: {{ sls_deps | json }}
 
-{%- for user in asdf.users | selectattr('asdf.system', 'defined') %}
+{%- for user in asdf.users | selectattr("asdf.system", "defined") %}
 {%-   for tool, version in user.asdf.system.items() %}
 
 User '{{ user.name }}' system default {{ tool }} {{ version }} is installed:

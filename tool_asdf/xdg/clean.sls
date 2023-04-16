@@ -1,11 +1,14 @@
-# -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{%- set tplroot = tpldir.split('/')[0] %}
+{#-
+    Removes asdf XDG compatibility crutches for all managed users.
+#}
+
+{%- set tplroot = tpldir.split("/")[0] %}
 {%- from tplroot ~ "/map.jinja" import mapdata as asdf with context %}
 
 
-{%- for user in asdf.users | rejectattr('xdg', 'sameas', false) %}
+{%- for user in asdf.users | rejectattr("xdg", "sameas", false) %}
 
 {%-   set user_default_conf = user.home | path_join(asdf.lookup.paths.confdir, asdf.lookup.paths.conffile) %}
 {%-   set user_default_datadir = user.home | path_join(asdf.lookup.paths.datadir) %}
@@ -53,7 +56,7 @@ asdf does not use XDG dirs during this salt run:
         ASDF_DEFAULT_TOOL_VERSIONS_FILENAME: false
     - false_unsets: true
 
-{%-   if user.get('persistenv') %}
+{%-   if user.get("persistenv") %}
 
 asdf is ignorant about XDG config for user '{{ user.name }}':
   file.replace:

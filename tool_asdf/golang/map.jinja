@@ -1,13 +1,12 @@
-{#- -*- coding: utf-8 -*- #}
 {#- vim: ft=jinja #}
 
-{%- set tplroot = tpldir.split('/')[0] %}
+{%- set tplroot = tpldir.split("/")[0] %}
 {%- from tplroot ~ "/map.jinja" import mapdata as asdf with context %}
 
-{%- set users = asdf.users | selectattr('asdf.golang', 'defined') | list -%} {# casting to list ensures it can be imported #}
+{%- set users = asdf.users | selectattr("asdf.golang", "defined") | list -%} {# casting to list ensures it can be imported #}
 
 {# see https://github.com/kennyp/asdf-golang#requirements #}
-{%- set dependencies = salt['grains.filter_by']({
-    'default': ['coreutils', 'curl'],
-    'MacOS': ['coreutils'],
-  }, 'os_family') -%}
+{%- set dependencies = salt["grains.filter_by"]({
+    "default": ["coreutils", "curl"],
+    "MacOS": ["coreutils"],
+  }, "os_family") -%}

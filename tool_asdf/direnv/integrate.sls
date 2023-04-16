@@ -1,14 +1,13 @@
-# -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{%- set tplroot = tpldir.split('/')[0] %}
+{%- set tplroot = tpldir.split("/")[0] %}
 {%- from tplroot ~ "/direnv/init.sls" import users %}
 
 include:
   - .package
 
 
-{%- for user in users | selectattr('asdf.integrate_direnv', 'defined') | selectattr('asdf.integrate_direnv') %}
+{%- for user in users | selectattr("asdf.integrate_direnv", "defined") | selectattr("asdf.integrate_direnv") %}
 
 # file.append does not accept owner/permission settings
 asdf direnvrc exists for user '{{ user.name }}':

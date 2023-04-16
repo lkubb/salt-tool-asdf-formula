@@ -1,7 +1,10 @@
-# -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{%- set tplroot = tpldir.split('/')[0] %}
+{#-
+    Removes the configuration of the asdf package.
+#}
+
+{%- set tplroot = tpldir.split("/")[0] %}
 {%- from tplroot ~ "/map.jinja" import mapdata as asdf with context %}
 
 
@@ -9,12 +12,12 @@
 
 asdf config file is cleaned for user '{{ user.name }}':
   file.absent:
-    - name: {{ user['_asdf'].conffile }}
+    - name: {{ user["_asdf"].conffile }}
 
 {%-   if user.xdg %}
 
 asdf config dir is absent for user '{{ user.name }}':
   file.absent:
-    - name: {{ user['_asdf'].confdir }}
+    - name: {{ user["_asdf"].confdir }}
 {%-   endif %}
 {%- endfor %}

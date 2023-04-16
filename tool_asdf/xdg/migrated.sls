@@ -1,14 +1,13 @@
-# -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{%- set tplroot = tpldir.split('/')[0] %}
+{%- set tplroot = tpldir.split("/")[0] %}
 {%- from tplroot ~ "/map.jinja" import mapdata as asdf with context %}
 
 include:
   - {{ tplroot }}.package
 
 
-{%- for user in asdf.users | rejectattr('xdg', 'sameas', false) %}
+{%- for user in asdf.users | rejectattr("xdg", "sameas", false) %}
 
 {%-   set user_default_conf = user.home | path_join(asdf.lookup.paths.confdir, asdf.lookup.paths.conffile) %}
 {%-   set user_default_datadir = user.home | path_join(asdf.lookup.paths.datadir) %}
@@ -93,7 +92,7 @@ asdf uses XDG dirs during this salt run:
       - asdf setup is completed
       - asdf is reshimmed on xdg migration for user '{{ user.name }}'
 
-{%-   if user.get('persistenv') %}
+{%-   if user.get("persistenv") %}
 
 persistenv file for asdf exists for user '{{ user.name }}':
   file.managed:

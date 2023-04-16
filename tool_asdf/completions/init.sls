@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{%- set tplroot = tpldir.split('/')[0] %}
-{%- set sls_package_install = tplroot ~ '.package.install' %}
+{%- set tplroot = tpldir.split("/")[0] %}
+{%- set sls_package_install = tplroot ~ ".package.install" %}
 {%- from tplroot ~ "/map.jinja" import mapdata as asdf with context %}
 
 include:
@@ -10,8 +9,8 @@ include:
 
 
 {#- Homebrew manages the completions already. #}
-{%- if 'Darwin' != grains.kernel %}
-{%-   for user in asdf.users | selectattr('completions', 'defined') | selectattr('completions') %}
+{%- if "Darwin" != grains.kernel %}
+{%-   for user in asdf.users | selectattr("completions", "defined") | selectattr("completions") %}
 
 Completions directory for asdf is available for user '{{ user.name }}':
   file.directory:
@@ -24,8 +23,8 @@ Completions directory for asdf is available for user '{{ user.name }}':
 # This only considers zsh atm. @TODO other shells
 asdf shell completions are available for user '{{ user.name }}':
   file.copy:
-    - name: {{ user.home | path_join(user.completions, '_asdf') }}
-    - source: {{ asdf.lookup.paths.install_dir | path_join('completions', '_asdf') }}
+    - name: {{ user.home | path_join(user.completions, "_asdf") }}
+    - source: {{ asdf.lookup.paths.install_dir | path_join("completions", "_asdf") }}
     - onchanges:
       - asdf is installed
     - require:

@@ -1,14 +1,13 @@
-# -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{%- set tplroot = tpldir.split('/')[0] %}
+{%- set tplroot = tpldir.split("/")[0] %}
 {%- from tplroot ~ "/rust/init.sls" import users %}
 
 include:
   - .package
 
 
-{%- for user in users | rejectattr('xdg', 'sameas', false) %}
+{%- for user in users | rejectattr("xdg", "sameas", false) %}
 
 asdf Rust plugin global configuration is migrated to XDG_CONFIG_HOME for user '{{ user.name }}':
   file.rename:
@@ -30,7 +29,7 @@ asdf Rust uses XDG dirs during this salt run:
       - Rust {{ version }} is installed for user '{{ user.name }}'
 {%-   endfor %}
 
-{%-   if user.get('persistenv') %}
+{%-   if user.get("persistenv") %}
 
 persistenv file for asdf rust for user '{{ user.name }}' exists:
   file.managed:

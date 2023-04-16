@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{%- set tplroot = tpldir.split('/')[0] %}
+{%- set tplroot = tpldir.split("/")[0] %}
 {%- from tplroot ~ "/python/map.jinja" import users %}
 
 include:
@@ -10,7 +9,7 @@ include:
 
 
 {%- for user in users %}
-{%-   if user.asdf.get('update_auto') %}
+{%-   if user.asdf.get("update_auto") %}
 
 PHP plugin is up to date for user '{{ user.name }}':
   asdf.plugin_latest:

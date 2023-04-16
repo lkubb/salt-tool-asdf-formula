@@ -1,14 +1,13 @@
-# -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{%- set tplroot = tpldir.split('/')[0] %}
+{%- set tplroot = tpldir.split("/")[0] %}
 {%- from tplroot ~ "/golang/map.jinja" import users %}
 
 include:
   - .package
 
 
-{%- for user in users | rejectattr('xdg', 'sameas', false) %}
+{%- for user in users | rejectattr("xdg", "sameas", false) %}
 
 asdf python plugin global configuration is migrated to XDG_CONFIG_HOME for user '{{ user.name }}':
   file.rename:
@@ -31,7 +30,7 @@ asdf golang uses XDG dirs during this salt run:
       - Go {{ version }} is installed for user '{{ user.name }}'
 {%-   endfor %}
 
-{%-   if user.get('persistenv') %}
+{%-   if user.get("persistenv") %}
 
 persistenv file for asdf golang for user '{{ user.name }}' exists:
   file.managed:

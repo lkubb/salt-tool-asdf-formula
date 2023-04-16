@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{%- set tplroot = tpldir.split('/')[0] %}
+{%- set tplroot = tpldir.split("/")[0] %}
 {%- from tplroot ~ "/rust/init.sls" import users %}
 
 include:
@@ -10,7 +9,7 @@ include:
 
 # Rust plugin uses rustup and does not compile from source, so no dependencies needed
 {%- for user in users %}
-  {%- if user.asdf.get('update_auto') %}
+  {%- if user.asdf.get("update_auto") %}
 
 Rust plugin is up to date for user '{{ user.name }}':
   asdf.plugin_latest:
