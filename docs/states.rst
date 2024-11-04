@@ -207,6 +207,5 @@ Removes the configuration of the asdf package.
 ``tool_asdf.completions.clean``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Removes asdf completions for all managed users.
-Has a dependency on `tool_asdf.package`_.
 
 

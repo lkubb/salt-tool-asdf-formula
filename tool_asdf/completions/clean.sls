@@ -2,7 +2,6 @@
 
 {#-
     Removes asdf completions for all managed users.
-    Has a dependency on `tool_asdf.package`_.
 #}
 
 {%- set tplroot = tpldir.split("/")[0] %}
