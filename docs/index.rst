@@ -1,5 +1,5 @@
-Welcome to salt-tool-asdf-formula's documentation!
-==================================================
+Welcome to tool-asdf-formula's documentation!
+=============================================
 
 .. toctree::
    :maxdepth: 2

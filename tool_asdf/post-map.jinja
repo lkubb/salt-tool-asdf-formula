@@ -56,7 +56,7 @@ state: {{ salt["cmd.run"]('[ -n "$XDG_STATE_HOME" ] && echo "${XDG_STATE_HOME}" 
       {%- set versions = users[user].asdf[tool]
             if users[user].asdf[tool] | is_list
             else [users[user].asdf[tool]
-              if users[user].asdf[tool] is not sameas true
+              if users[user].asdf[tool] is not true
               else "latest"]
       -%}
       {%- do users[user].asdf.update({tool: versions}) -%}

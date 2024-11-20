@@ -51,7 +51,13 @@ values:
       conffile: .default-cargo-crates
       # rust plugin only allows to set basedir and always appends .default-cargo-crates
       xdg_conffile: .default-cargo-crates
-  # Just here for testing
-  added_in_defaults: defaults_value
-  winner: defaults
+  tofs:
+    files_switch:
+      - G@id|U@users
+      - id
+      - C@roles|U@users
+      - roles
+      - G@os_family|U@users
+      - os_family
+      - U@users
 ...
