@@ -33,6 +33,9 @@ Existing asdf configuration is migrated for user '{{ user.name }}':
         - source: {{ user_default_conf }}
       - {{ user_xdg_versionfile }}:
         - source: {{ user_default_versions }}
+        - unless:
+          - fun: file.is_link
+            path: {{ user_default_versions }}
     - require:
       - asdf has its config dir in XDG_CONFIG_HOME for user '{{ user.name }}'
     - require_in:
