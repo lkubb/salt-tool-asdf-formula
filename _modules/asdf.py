@@ -412,7 +412,7 @@ def _list_installed(user=None):
 
     parsed = {}
     for tool, versions in re.findall(
-        r"^(\S+)\n((?:\s+\S+\n)+)", installed, re.MULTILINE
+        r"^(\S+)\n((?:\s+\S+\n?)+)", installed, re.MULTILINE
     ):
         parsed[tool] = [v.strip(" *") for v in versions.splitlines()]
     return parsed
